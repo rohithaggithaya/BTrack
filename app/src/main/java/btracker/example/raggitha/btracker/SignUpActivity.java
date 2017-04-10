@@ -153,7 +153,5 @@ public class SignUpActivity extends AppCompatActivity {
         UserData user= new UserData( name,  gender,  email,  team, dob);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
         databaseReference.child(USER.getUid()).setValue(user);
-
-
     }
 }

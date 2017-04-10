@@ -2,6 +2,7 @@ package btracker.example.raggitha.btracker;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class editProfileActivity extends AppCompatActivity {
 
@@ -21,6 +26,7 @@ public class editProfileActivity extends AppCompatActivity {
     private Spinner updateTeam;
     private TextView EPEmail;
 
+    private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
     private AlertDialog.Builder alertDialog;
 
@@ -37,9 +43,16 @@ public class editProfileActivity extends AppCompatActivity {
         EPEmail = (TextView) findViewById(R.id.EPEmailID);
         currentPassword = (EditText) findViewById(R.id.EPPasswordID);
 
+        firebaseUser = firebaseAuth.getCurrentUser();
         firebaseAuth = FirebaseAuth.getInstance();
         EPEmail.setText(firebaseAuth.getCurrentUser().getEmail());
         alertDialog = new AlertDialog.Builder(this);
+
+        String newName = updateName.getText().toString().trim();
+        String newTeam = updateTeam.getSelectedItem().toString().trim();
+        String newDOB = updateDOB.getText().toString().trim();
+        final String cPassword = currentPassword.getText().toString().trim();
+        final String email = firebaseAuth.getCurrentUser().getEmail();
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +62,16 @@ public class editProfileActivity extends AppCompatActivity {
                 alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        updateProfile();
+                        firebaseAuth.signInWithEmailAndPassword(email,cPassword)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if(task.isSuccessful())
+                                            updateProfile();
+                                        else
+                                            onFailure(task.getException());
+                                    }
+                                });
                     }
                 });
                 alertDialog.setNegativeButton("No", null);
@@ -79,6 +101,11 @@ public class editProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void onFailure(Exception exception) {
+        Toast.makeText(getApplicationContext(),exception.toString(),Toast.LENGTH_LONG).show();
+    }
+
     private void updateProfile() {
+
     }
 }
