@@ -15,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.android.gms.tasks.Task;
@@ -25,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Date;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -60,11 +58,10 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
+                    registerUser();
             }
         });
 
@@ -75,6 +72,9 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
             }
         });
+    }
+
+    private void updateUser() {
     }
 
     private void registerUser() {
@@ -89,7 +89,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if(TextUtils.isEmpty(email)||((!email.contains("@nokia.com"))))
+        if(TextUtils.isEmpty(email)/*||((!email.contains("@nokia.com")))*/)
         {
             if(TextUtils.isEmpty(email))
                 emailID.setError("Required");
@@ -126,6 +126,7 @@ public class SignUpActivity extends AppCompatActivity {
                             progressDialog.cancel();
                             Toast.makeText(getApplicationContext(),"Registration Successful",Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+                            finish();
                         }
                         else
                         {
@@ -140,8 +141,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void saveUserInfo() {
 
-        String email = emailID.getText().toString().trim();
+        String email = emailID.getText().toString().trim().toLowerCase();
         String name = enteredName.getText().toString().trim();
+        name = name.substring(0,1).toUpperCase()+name.substring(1);
         String dob = DOB.getText().toString().trim();
         String team = TEAM.getSelectedItem().toString();
         int i = genderGroup.getCheckedRadioButtonId();

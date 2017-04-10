@@ -42,6 +42,12 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
 
         progressDialog = new ProgressDialog(this);
 
+        if(firebaseAuth.getCurrentUser()!=null )
+        {
+            startActivity(new Intent(SignInActivity.this,homepage_activity.class));
+            finish();
+        }
+
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -39,7 +39,8 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".ForgotPassActivity"></activity>
+        <activity android:name=".ForgotPassActivity" />
+        <activity android:name=".editProfileActivity"></activity>
     </application>
 
 </manifest>
