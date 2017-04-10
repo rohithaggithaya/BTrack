@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "13965580140",
+    "firebase_url": "https://btracker-9fe1a.firebaseio.com",
+    "project_id": "btracker-9fe1a",
+    "storage_bucket": "btracker-9fe1a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13965580140:android:72d265f19367c8e0",
+        "android_client_info": {
+          "package_name": "btracker.example.raggitha.btracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13965580140-6fp3s222l97q8pcu4k09tbj1qbepgks0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "btracker.example.raggitha.btracker",
+            "certificate_hash": "0cccb77b2b7421d427b4776fad6a2324858aec3d"
+          }
+        },
+        {
+          "client_id": "13965580140-m8kp3o37kd93pthsn539nsdtcjn2vh17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdXLQXeY-MHx8dXorl-MnEVy2Hn4bw7vo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13965580140-m8kp3o37kd93pthsn539nsdtcjn2vh17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
