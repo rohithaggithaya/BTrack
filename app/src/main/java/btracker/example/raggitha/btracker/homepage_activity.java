@@ -69,8 +69,7 @@ public class homepage_activity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         int myPosition = position;
-                        String itemClickedId = birthdaysList.getItemAtPosition(myPosition).toString();
-                        Toast.makeText(getApplicationContext(),"Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Coming soon!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

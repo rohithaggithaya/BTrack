@@ -150,7 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
         checkedButton =(RadioButton) findViewById(i);
         String gender = checkedButton.getText().toString().trim();
 
-        UserData user= new UserData( name,  gender,  email,  team, dob);
+        UserData user= new UserData(name, dob, team, email, gender);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
         databaseReference.child(USER.getUid()).setValue(user);
     }

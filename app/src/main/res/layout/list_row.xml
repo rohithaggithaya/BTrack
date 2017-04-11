@@ -9,6 +9,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
             android:textSize="25sp"
+            android:textAlignment="center"
             android:textColor="#0a0909"
             android:textStyle="bold"
             android:id="@+id/listNameID"

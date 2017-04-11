@@ -13,7 +13,7 @@ public class UserData {
     public UserData(){
 
     }
-    public UserData(String name, String gender, String email, String team, String DOFB) {
+    public UserData(String name, String DOFB, String team, String email, String gender) {
         Name = name;
         Gender = gender;
         Email = email;
