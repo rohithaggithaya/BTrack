@@ -24,4 +24,9 @@ public class MainActivity extends AppCompatActivity {
         },WELCOME_DURATION);
 
     }
+
+    @Override
+    public void onBackPressed() {
+    }
+
 }

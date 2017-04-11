@@ -73,6 +73,7 @@ public class profileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(profileActivity.this,editProfileActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
                 AlertDialog diag;
@@ -96,8 +97,11 @@ public class profileActivity extends AppCompatActivity {
             profileDOB.setText(ds.getValue(UserData.class).getDOB());
             profileEmail.setText(ds.getValue(UserData.class).getEmail());
             profileGender.setText(ds.getValue(UserData.class).getGender());
-
-
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(profileActivity.this,homepage_activity.class));
+        finish();
+    }
 }

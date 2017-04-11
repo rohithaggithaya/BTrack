@@ -82,7 +82,6 @@ public class editProfileActivity extends AppCompatActivity {
                 else
                 {
                     alertDialog.setTitle("Update?");
-                    alertDialog.setMessage("Are you sure?");
                     alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -113,7 +112,6 @@ public class editProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 alertDialog.setTitle("Cancel?");
-                alertDialog.setMessage("Are you sure?");
                 alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -162,6 +160,23 @@ public class editProfileActivity extends AppCompatActivity {
 
         UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender);
         databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(ud);
+    }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialog;
+        alertDialog = new AlertDialog.Builder(editProfileActivity.this);
+        alertDialog.setTitle("Cancel?");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(editProfileActivity.this,profileActivity.class));
+                finish();
+            }
+        });
+        alertDialog.setNegativeButton("No", null);
+        alertDialog.setCancelable(false);
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
     }
 }

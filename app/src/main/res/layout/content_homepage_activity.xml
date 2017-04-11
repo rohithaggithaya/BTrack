@@ -12,8 +12,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="btracker.example.raggitha.btracker.homepage_activity"
     tools:showIn="@layout/activity_homepage_activity">
-
-
     <CheckBox
         android:text="CheckBox"
         android:layout_width="wrap_content"

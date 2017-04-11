@@ -1,8 +1,10 @@
 package btracker.example.raggitha.btracker;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -110,5 +112,24 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
     public void onFailure(@NonNull Exception e) {
         String message = e.getMessage();
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialog;
+        alertDialog = new AlertDialog.Builder(SignInActivity.this);
+        alertDialog.setTitle("Exit?");
+        alertDialog.setMessage("Do you really want to close B-Track?");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SignInActivity.this.finish();
+                Toast.makeText(getApplicationContext(),"Good bye!",Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.setNegativeButton("No", null);
+        alertDialog.setCancelable(false);
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
     }
 }

@@ -1,15 +1,18 @@
 package btracker.example.raggitha.btracker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -34,10 +37,10 @@ public class homepage_activity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_homepage_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,6 +57,8 @@ public class homepage_activity extends AppCompatActivity {
                 birthdaysListMap.clear();
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
+                    if(ds.getValue(UserData.class).getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
+                        continue;
                     HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
                     birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
                     birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB());
@@ -95,13 +100,33 @@ public class homepage_activity extends AppCompatActivity {
         {
             firebaseAuth.signOut();
             startActivity(new Intent(homepage_activity.this, SignInActivity.class));
-            Toast.makeText(getApplicationContext(),"Good bye! Have a nice day",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Logged out successfully!",Toast.LENGTH_SHORT).show();
             finish();
         }
         else
         {
             startActivity(new Intent(homepage_activity.this, profileActivity.class));
+            finish();
         }
         return  true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialog;
+        alertDialog = new AlertDialog.Builder(homepage_activity.this);
+        alertDialog.setTitle("Exit?");
+        alertDialog.setMessage("Do you really want to close B-Track?");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                homepage_activity.this.finish();
+                Toast.makeText(getApplicationContext(),"Good bye!",Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.setNegativeButton("No", null);
+        alertDialog.setCancelable(false);
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
     }
 }

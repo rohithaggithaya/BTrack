@@ -25,7 +25,6 @@
         <activity android:name=".SignInActivity" />
         <activity
             android:name=".homepage_activity"
-            android:label="@string/title_activity_homepage_activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".profileActivity" />
 
