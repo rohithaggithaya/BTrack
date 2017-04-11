@@ -61,7 +61,6 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
-                finish();
             }
         });
 

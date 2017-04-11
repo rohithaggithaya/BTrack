@@ -55,12 +55,13 @@
 
         <TextView
             android:layout_centerHorizontal="true"
-            android:text="New to B-Track? Sign Up Here."
+            android:text="Create account here."
             android:layout_below="@+id/mainSignInID"
             android:id="@+id/mainSignUpID"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
             android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -73,7 +74,8 @@
             android:id="@+id/mainForgotID"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:textStyle="italic"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
             android:textSize="15dp"
             />
 
