@@ -62,7 +62,7 @@
             android:layout_marginTop="20dp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
@@ -76,7 +76,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="15sp"
             />
 
     </LinearLayout>
