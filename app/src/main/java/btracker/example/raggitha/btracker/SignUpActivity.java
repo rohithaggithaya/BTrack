@@ -74,9 +74,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUser() {
-    }
-
     private void registerUser() {
         String email = emailID.getText().toString().trim();
         String Enteredpassword = password.getText().toString().trim();
@@ -153,5 +150,11 @@ public class SignUpActivity extends AppCompatActivity {
         UserData user= new UserData(name, dob, team, email, gender);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
         databaseReference.child(USER.getUid()).setValue(user);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+        finish();
     }
 }

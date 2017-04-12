@@ -77,4 +77,10 @@ public class ForgotPassActivity extends AppCompatActivity
         String message = exception.getMessage();
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ForgotPassActivity.this,SignInActivity.class));
+        finish();
+    }
 }
