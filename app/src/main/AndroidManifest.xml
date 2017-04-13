@@ -39,7 +39,8 @@
             android:resource="@color/colorAccent" />
 
         <activity android:name=".ForgotPassActivity" />
-        <activity android:name=".editProfileActivity"></activity>
+        <activity android:name=".editProfileActivity" />
+        <activity android:name=".updatePasswordActivity"></activity>
     </application>
 
 </manifest>

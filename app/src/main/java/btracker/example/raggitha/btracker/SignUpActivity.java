@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -35,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Spinner TEAM;
     private Button signUp;
     private TextView signIn;
+    private ImageView calendarIcon;
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
@@ -53,6 +55,8 @@ public class SignUpActivity extends AppCompatActivity {
         signUp = (Button) findViewById(R.id.SUsignUpID);
         signIn = (TextView) findViewById(R.id.SULoginID);
         password = (EditText) findViewById(R.id.SUPasswordID);
+        calendarIcon = (ImageView) findViewById(R.id.SUCalendarIconID);
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
@@ -70,6 +74,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+            }
+        });
+
+        calendarIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
             }
         });
     }
@@ -140,7 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         String email = emailID.getText().toString().trim().toLowerCase();
         String name = enteredName.getText().toString().trim();
-        name = name.substring(0,1).toUpperCase()+name.substring(1);
+        name = name.substring(0,1).toUpperCase() + name.substring(1);
         String dob = DOB.getText().toString().trim();
         String team = TEAM.getSelectedItem().toString();
         int i = genderGroup.getCheckedRadioButtonId();

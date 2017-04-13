@@ -103,9 +103,14 @@ public class homepage_activity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Logged out successfully!",Toast.LENGTH_SHORT).show();
             finish();
         }
-        else
+        else if (item.getItemId()==R.id.profileID)
         {
             startActivity(new Intent(homepage_activity.this, profileActivity.class));
+            finish();
+        }
+        else
+        {
+            startActivity(new Intent(homepage_activity.this, updatePasswordActivity.class));
             finish();
         }
         return  true;

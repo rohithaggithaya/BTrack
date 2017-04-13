@@ -8,8 +8,15 @@
         android:title="Profile" />
 
     <item
+        android:id="@+id/changePasswordID"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="Change Password" />
+
+    <item
         android:id="@+id/logoutID"
         android:actionViewClass="android.support.v7.widget.SearchView"
         android:title="Log out" />
+
+
 
 </menu>
