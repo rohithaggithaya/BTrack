@@ -1,16 +1,18 @@
 package btracker.example.raggitha.btracker;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +21,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
 
 public class editProfileActivity extends AppCompatActivity {
 
@@ -32,6 +35,8 @@ public class editProfileActivity extends AppCompatActivity {
     private EditText updateName, currentPassword, updateDOB;
     private Spinner updateTeam;
     private TextView EPEmail;
+    private Calendar calendar = Calendar.getInstance();
+    private ImageView calendarIcon;
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
@@ -52,6 +57,7 @@ public class editProfileActivity extends AppCompatActivity {
         updateTeam = (Spinner) findViewById(R.id.EPTeamID);
         EPEmail = (TextView) findViewById(R.id.EPEmailID);
         currentPassword = (EditText) findViewById(R.id.EPPasswordID);
+        calendarIcon = (ImageView) findViewById(R.id.EPCalendarIconID);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -68,6 +74,14 @@ public class editProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        calendarIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new DatePickerDialog(editProfileActivity.this, listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -127,6 +141,13 @@ public class editProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            updateDOB.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+        }
+    };
 
     private void populateData(DataSnapshot dataSnapshot)
     {

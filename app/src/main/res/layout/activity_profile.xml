@@ -10,6 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.profileActivity">
 
+    
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +24,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:contentDescription="Profile icon"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:id="@+id/pfIconID"
@@ -39,6 +42,7 @@
                 android:layout_gravity="center"
                 />
             <ImageView
+                android:contentDescription="Calendar Icon"
                 android:id="@+id/pfEditID"
                 android:src="@drawable/edit_icon"
                 android:layout_width="30dp"
