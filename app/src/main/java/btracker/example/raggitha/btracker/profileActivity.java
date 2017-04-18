@@ -103,12 +103,14 @@ public class profileActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 progressDialog.setMessage("Validating..");
                 progressDialog.show();
+                progressDialog.setCancelable(false);
                 String password = providePassword.getText().toString().trim();
                 String email = firebaseAuth.getCurrentUser().getEmail();
 
                 if(password.isEmpty())
                 {
                     Toast.makeText(getApplicationContext(),"Password required",Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     return;
                 }
 
