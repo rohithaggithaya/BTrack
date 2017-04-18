@@ -23,14 +23,23 @@
         </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
+
         <activity
             android:name=".homepage_activity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".profileActivity" />
 
         <service android:name=".FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
@@ -40,7 +49,7 @@
 
         <activity android:name=".ForgotPassActivity" />
         <activity android:name=".editProfileActivity" />
-        <activity android:name=".updatePasswordActivity"></activity>
+        <activity android:name=".updatePasswordActivity"/>
     </application>
 
 </manifest>

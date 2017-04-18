@@ -32,9 +32,9 @@ import java.util.Calendar;
 public class editProfileActivity extends AppCompatActivity {
 
     private Button updateButton, cancelButton;
-    private EditText updateName, currentPassword, updateDOB;
+    private EditText updateName, updateDOB;
     private Spinner updateTeam;
-    private TextView EPEmail;
+    private TextView EPEmail, EPGender;
     private Calendar calendar = Calendar.getInstance();
     private ImageView calendarIcon;
 
@@ -56,8 +56,8 @@ public class editProfileActivity extends AppCompatActivity {
         updateDOB = (EditText) findViewById(R.id.EPDateID);
         updateTeam = (Spinner) findViewById(R.id.EPTeamID);
         EPEmail = (TextView) findViewById(R.id.EPEmailID);
-        currentPassword = (EditText) findViewById(R.id.EPPasswordID);
         calendarIcon = (ImageView) findViewById(R.id.EPCalendarIconID);
+        EPGender = (TextView) findViewById(R.id.EPGenderID);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -89,36 +89,19 @@ public class editProfileActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                final String cPassword = currentPassword.getText().toString().trim();
-                final String email = firebaseAuth.getCurrentUser().getEmail();
-                if(cPassword.isEmpty())
-                    currentPassword.setError("Required");
-                else
-                {
                     alertDialog.setTitle("Update?");
                     alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            firebaseAuth.signInWithEmailAndPassword(email,cPassword)
-                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if(task.isSuccessful()) {
-                                                updateProfile();
-                                                Toast.makeText(getApplicationContext(),"Update Successful!",Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(editProfileActivity.this,profileActivity.class));
-                                                finish();
-                                            }
-                                            else
-                                                onFailure(task.getException());
-                                        }
-                                    });
+                            updateProfile();
+                            Toast.makeText(getApplicationContext(),"Update Successful!",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(editProfileActivity.this,profileActivity.class));
+                            finish();
                         }
                     });
                     alertDialog.setNegativeButton("No", null);
                     AlertDialog dialog = alertDialog.create();
                     dialog.show();
-                }
                 }
         });
 
@@ -145,7 +128,20 @@ public class editProfileActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            updateDOB.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+            month++;
+            String day,mnth;
+            if(dayOfMonth<10)
+                day = "0"+String.valueOf(dayOfMonth);
+            else
+                day = String.valueOf(dayOfMonth);
+
+            if((month)<10)
+                mnth="0"+String.valueOf(month);
+            else
+                mnth = String.valueOf(month);
+
+            updateDOB.setText(day+ "/" + mnth + "/" + year);
+
         }
     };
 
@@ -168,11 +164,9 @@ public class editProfileActivity extends AppCompatActivity {
         updateDOB.setText(ds.getValue(UserData.class).getDOB());
         currentEmail = ds.getValue(UserData.class).getEmail();
         currentGender = ds.getValue(UserData.class).getGender();
+        EPGender.setText(currentGender);
     }
 
-    private void onFailure(Exception exception) {
-        Toast.makeText(getApplicationContext(),exception.getMessage(),Toast.LENGTH_LONG).show();
-    }
 
     private void updateProfile() {
         String newName = updateName.getText().toString().trim();

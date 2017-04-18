@@ -1,15 +1,23 @@
 package btracker.example.raggitha.btracker;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +32,8 @@ public class profileActivity extends AppCompatActivity {
     private TextView profileName;
     private TextView profileGender, profileEmail, profileDOB, profileTeam;
     private ImageView editImage;
+
+    private ProgressDialog progressDialog;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -42,6 +52,8 @@ public class profileActivity extends AppCompatActivity {
         profileDOB = (TextView) findViewById(R.id.pfDOBID);
         profileTeam = (TextView) findViewById(R.id.pfTeamID);
         editImage = (ImageView) findViewById(R.id.pfEditID);
+
+        progressDialog = new ProgressDialog(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -71,9 +83,7 @@ public class profileActivity extends AppCompatActivity {
                 alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(profileActivity.this,editProfileActivity.class);
-                        startActivity(intent);
-                        finish();
+                        validateUser();
                     }
                 });
                 AlertDialog diag;
@@ -81,6 +91,57 @@ public class profileActivity extends AppCompatActivity {
                 diag.show();
             }
         });
+    }
+
+    private void validateUser() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final EditText providePassword = new EditText(profileActivity.this);
+        providePassword.setHint("Enter Password");
+        alertDialog.setView(providePassword);
+        alertDialog.setTitle("Validate User");
+        alertDialog.setCancelable(false);
+
+        alertDialog.setPositiveButton("submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                progressDialog.setMessage("Validating..");
+                progressDialog.show();
+                String password = providePassword.getText().toString().trim();
+                String email = firebaseAuth.getCurrentUser().getEmail();
+
+                if(password.isEmpty())
+                {
+                    Toast.makeText(getApplicationContext(),"Password required",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                firebaseAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful())
+                                {
+                                    Toast.makeText(getApplicationContext(),"Validation Successful",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(profileActivity.this,editProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                    progressDialog.dismiss();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    return;
+                                }
+                            }
+                        });
+            }
+        });
+        alertDialog.setNegativeButton("Cancel",null);
+
+
+        AlertDialog ad = alertDialog.create();
+        ad.show();
     }
 
     private void displayData(DataSnapshot dataSnapshot) {

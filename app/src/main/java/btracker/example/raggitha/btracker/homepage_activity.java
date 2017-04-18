@@ -3,8 +3,6 @@ package btracker.example.raggitha.btracker;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class homepage_activity extends AppCompatActivity {
+public class homepage_activity extends AppCompatActivity{
 
     private ListView birthdaysList;
     private BirthdayListViewAdapter birthdayListViewAdapter;
@@ -59,6 +57,7 @@ public class homepage_activity extends AppCompatActivity {
                 {
                     if(ds.getValue(UserData.class).getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
                         continue;
+
                     HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
                     birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
                     birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB());
@@ -73,7 +72,6 @@ public class homepage_activity extends AppCompatActivity {
                 birthdaysList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        int myPosition = position;
                         Toast.makeText(getApplicationContext(),"Coming soon!", Toast.LENGTH_SHORT).show();
                     }
                 });
