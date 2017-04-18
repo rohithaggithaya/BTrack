@@ -3,13 +3,11 @@ package btracker.example.raggitha.btracker;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -152,7 +149,6 @@ public class profileActivity extends AppCompatActivity {
                 return;
             }
 
-            UserData ud = new UserData();
             profileName.setText(ds.getValue(UserData.class).getName());
             profileTeam.setText(ds.getValue(UserData.class).getTeam());
             profileDOB.setText(ds.getValue(UserData.class).getDOB());

@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class homepage_activity extends AppCompatActivity{
+public class homepage_activity extends AppCompatActivity {
 
     private ListView birthdaysList;
     private BirthdayListViewAdapter birthdayListViewAdapter;
@@ -51,18 +51,18 @@ public class homepage_activity extends AppCompatActivity{
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 birthdaysListMap.clear();
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
                     if(ds.getValue(UserData.class).getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
                         continue;
-
                     HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
                     birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
                     birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB());
                     birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
-
+                    birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
+                    birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());
                     birthdaysListMap.add(birthdayHashMap);
                 }
 
@@ -72,7 +72,15 @@ public class homepage_activity extends AppCompatActivity{
                 birthdaysList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(getApplicationContext(),"Coming soon!", Toast.LENGTH_SHORT).show();
+                        Intent intent= new Intent(homepage_activity.this,homeProfileActivity.class);
+                        intent.putExtra("NameKey",birthdaysListMap.get(position).get("NameKey"));
+                        intent.putExtra("DOBKey",birthdaysListMap.get(position).get("DOBKey"));
+                        intent.putExtra("TeamKey",birthdaysListMap.get(position).get("TeamKey"));
+                        intent.putExtra("EmailKey",birthdaysListMap.get(position).get("EmailKey"));
+                        intent.putExtra("GenderKey",birthdaysListMap.get(position).get("GenderKey"));
+                        intent.putExtra("curUserNameKey",dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(UserData.class).getName());
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }

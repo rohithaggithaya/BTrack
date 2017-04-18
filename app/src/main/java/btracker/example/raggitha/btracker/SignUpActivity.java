@@ -96,8 +96,22 @@ public class SignUpActivity extends AppCompatActivity {
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            DOB.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+        {
+            month++;
+            String day,mnth;
+            if(dayOfMonth<10)
+                day = "0"+String.valueOf(dayOfMonth);
+            else
+                day = String.valueOf(dayOfMonth);
+
+            if((month)<10)
+                mnth="0"+String.valueOf(month);
+            else
+                mnth = String.valueOf(month);
+
+                DOB.setText(day+ "/" + mnth + "/" + year);
+
         }
     };
     private void registerUser() {

@@ -42,7 +42,7 @@
                 android:layout_gravity="center"
                 />
             <ImageView
-                android:contentDescription="Calendar Icon"
+                android:contentDescription="Edit Icon"
                 android:id="@+id/pfEditID"
                 android:src="@drawable/edit_icon"
                 android:layout_width="30dp"
