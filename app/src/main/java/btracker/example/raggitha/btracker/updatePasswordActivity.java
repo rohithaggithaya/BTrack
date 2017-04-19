@@ -1,5 +1,6 @@
 package btracker.example.raggitha.btracker;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ public class updatePasswordActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -33,6 +36,10 @@ public class updatePasswordActivity extends AppCompatActivity {
         updateButton = (Button) findViewById(R.id.UPUpdateButtonID);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Updating..");
+        progressDialog.setCancelable(false);
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,12 +69,16 @@ public class updatePasswordActivity extends AppCompatActivity {
                     return;
                 }
 
+                progressDialog.show();
+
                 firebaseAuth.getCurrentUser().updatePassword(retypepass)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    progressDialog.dismiss();
                                     firebaseAuth.signOut();
+
                                     startActivity(new Intent(updatePasswordActivity.this, SignInActivity.class));
                                     finish();
                                     Toast.makeText(getApplicationContext(), "Password Update Successful", Toast.LENGTH_SHORT).show();

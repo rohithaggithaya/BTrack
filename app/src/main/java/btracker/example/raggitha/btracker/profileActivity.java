@@ -3,7 +3,9 @@ package btracker.example.raggitha.btracker;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
 
 public class profileActivity extends AppCompatActivity {
 
@@ -35,7 +43,11 @@ public class profileActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
+    private StorageReference storageReference;
     private String userID;
+
+    private static final int GALLERY_INTENT = 2;
+    private static final int CAMERA_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,7 @@ public class profileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -86,6 +99,34 @@ public class profileActivity extends AppCompatActivity {
                 AlertDialog diag;
                 diag = alertDialog.create();
                 diag.show();
+            }
+        });
+
+        profileIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(profileActivity.this);
+                String items[] = {"Choose from Gallery", "Capture an image"};
+                alertDialog.setTitle("Choose an option");
+                alertDialog.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0)
+                        {
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, GALLERY_INTENT);
+                        }
+                        else
+                            //Toast.makeText(getApplicationContext(),"Camera",Toast.LENGTH_SHORT).show();
+                        {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                        }
+                    }
+                });
+                AlertDialog ad = alertDialog.create();
+                ad.show();
             }
         });
     }
@@ -161,5 +202,45 @@ public class profileActivity extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(profileActivity.this,homepage_activity.class));
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri uri = data.getData();
+        if((requestCode == GALLERY_INTENT) && (resultCode == RESULT_OK))
+        {
+            progressDialog.setMessage("Uploading...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            StorageReference filePath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+            filePath.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Uri downUri = taskSnapshot.getDownloadUrl();
+                            Picasso.with(profileActivity.this).load(downUri).fit().centerCrop().into(profileIcon);
+
+                            Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
+        if((requestCode == CAMERA_REQUEST_CODE) && (resultCode == RESULT_OK))
+        {
+            progressDialog.setMessage("Uploading...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            StorageReference filepath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+            filepath.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 }
