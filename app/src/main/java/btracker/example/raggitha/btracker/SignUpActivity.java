@@ -150,6 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         progressDialog.setMessage("Creating Account...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email,Enteredpassword)
@@ -159,16 +160,25 @@ public class SignUpActivity extends AppCompatActivity {
                         if(task.isSuccessful())
                         {
                             saveUserInfo();
-                            FirebaseMessaging.getInstance().subscribeToTopic("Bday");
-                            progressDialog.cancel();
+                            firebaseAuth.getCurrentUser().sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getApplicationContext(), "Verification email sent to " + firebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                            startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+                                            finish();
+                                        }
+                                    });
+                            /*progressDialog.cancel();
                             Toast.makeText(getApplicationContext(),"Registration Successful",Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
-                            finish();
+                            finish();*/
                         }
                         else
                         {
                             progressDialog.cancel();
-                            Toast.makeText(getApplicationContext(),"Failed! Please try again",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
 

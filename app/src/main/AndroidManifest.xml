@@ -13,22 +13,28 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SignInActivity" />
+        <activity android:name=".SignUpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignInActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".homepage_activity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".profileActivity" />
+        <activity android:name=".profileActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".FirebaseMessagingService">
             <intent-filter>
@@ -47,10 +53,14 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".ForgotPassActivity" />
-        <activity android:name=".editProfileActivity" />
-        <activity android:name=".updatePasswordActivity"/>
-        <activity android:name=".homeProfileActivity"/>
+        <activity android:name=".ForgotPassActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".editProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".updatePasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".homeProfileActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

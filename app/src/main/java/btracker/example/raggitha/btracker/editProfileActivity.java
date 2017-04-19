@@ -43,7 +43,7 @@ public class editProfileActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialog;
     private FirebaseDatabase firebaseDatabase;
 
-    private  String currentGender, currentEmail;
+    private  String currentGender, currentEmail, currentName, currentDOB, currentTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +94,6 @@ public class editProfileActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             updateProfile();
-                            Toast.makeText(getApplicationContext(),"Update Successful!",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(editProfileActivity.this,profileActivity.class));
-                            finish();
                         }
                     });
                     alertDialog.setNegativeButton("No", null);
@@ -164,6 +161,9 @@ public class editProfileActivity extends AppCompatActivity {
         updateDOB.setText(ds.getValue(UserData.class).getDOB());
         currentEmail = ds.getValue(UserData.class).getEmail();
         currentGender = ds.getValue(UserData.class).getGender();
+        currentName = ds.getValue(UserData.class).getName();
+        currentDOB = ds.getValue(UserData.class).getDOB();
+        currentTeam = ds.getValue(UserData.class).getTeam();
         EPGender.setText(currentGender);
     }
 
@@ -173,8 +173,22 @@ public class editProfileActivity extends AppCompatActivity {
         String newTeam = updateTeam.getSelectedItem().toString().trim();
         String newDOB = updateDOB.getText().toString().trim();
 
-        UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender);
-        databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(ud);
+        if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setIcon(R.drawable.alerticon);
+            alertDialog.setTitle("No Changes Detected!");
+            alertDialog.setPositiveButton("ok", null);
+            final AlertDialog ad = alertDialog.create();
+            ad.show();
+        }
+        else {
+            UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender);
+            databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(ud);
+            Toast.makeText(getApplicationContext(), "Update Successful!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(editProfileActivity.this, profileActivity.class));
+            finish();
+        }
     }
 
     @Override

@@ -90,7 +90,6 @@ public class homepage_activity extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override

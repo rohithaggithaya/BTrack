@@ -109,7 +109,6 @@ public class profileActivity extends AppCompatActivity {
 
                 if(password.isEmpty())
                 {
-                    Toast.makeText(getApplicationContext(),"Password required",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     return;
                 }

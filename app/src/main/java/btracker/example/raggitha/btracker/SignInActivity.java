@@ -44,7 +44,7 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
 
         progressDialog = new ProgressDialog(this);
 
-        if(firebaseAuth.getCurrentUser()!=null )
+        if((firebaseAuth.getCurrentUser()!=null) && (firebaseAuth.getCurrentUser().isEmailVerified()))
         {
             startActivity(new Intent(SignInActivity.this,homepage_activity.class));
             finish();
@@ -91,16 +91,47 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
         }
 
         progressDialog.setMessage("Logging-in, please wait...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
-        firebaseAuth.signInWithEmailAndPassword(usname,pword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(usname,pword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
                 if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Logged in Successfully!",Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignInActivity.this,homepage_activity.class));
-                    finish();
+                    if(!firebaseAuth.getCurrentUser().isEmailVerified())
+                    {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
+                        alertDialog.setIcon(R.drawable.alerticon);
+                        alertDialog.setTitle("Alert");
+                        alertDialog.setMessage("Please verify your email to login");
+                        alertDialog.setPositiveButton("Send mail again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                firebaseAuth.getCurrentUser().sendEmailVerification()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful())
+                                                    Toast.makeText(getApplicationContext(),"Verification email sent to " + firebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_LONG).show();
+                                                else
+                                                    Toast.makeText(getApplicationContext(),task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            }
+                        });
+                        alertDialog.setNegativeButton("ok",null);
+                        alertDialog.setCancelable(false);
+                        AlertDialog ad = alertDialog.create();
+                        ad.show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Logged in Successfully!",Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(SignInActivity.this,homepage_activity.class));
+                        finish();
+                    }
                 }
                 else
                     onFailure(task.getException());
