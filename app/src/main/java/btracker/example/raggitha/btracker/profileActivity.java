@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -196,6 +197,22 @@ public class profileActivity extends AppCompatActivity {
             profileDOB.setText(ds.getValue(UserData.class).getDOB());
             profileEmail.setText(ds.getValue(UserData.class).getEmail());
             profileGender.setText(ds.getValue(UserData.class).getGender());
+            updateProfilePic();
+    }
+
+    private void updateProfilePic() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
+                        .setPhotoUri(uri)
+                        .build();
+                firebaseAuth.getCurrentUser().updateProfile(userProfile);
+            }
+        });
+
+        Picasso.with(profileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileIcon);
     }
 
     @Override
@@ -219,9 +236,7 @@ public class profileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Uri downUri = taskSnapshot.getDownloadUrl();
-                            Picasso.with(profileActivity.this).load(downUri).fit().centerCrop().into(profileIcon);
-
+                            Picasso.with(profileActivity.this).load(taskSnapshot.getDownloadUrl()).centerCrop().fit().into(profileIcon);
                             Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
                         }
                     });
