@@ -13,11 +13,11 @@
     <TextView
         android:text="Hey there, Let us know who you are..."
         android:layout_centerHorizontal="true"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:id="@+id/SUTitle"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -30,17 +30,14 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:text="Name: "
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
             <EditText
                 android:id="@+id/SUNameID"
                 android:layout_marginLeft="29dp"
@@ -48,7 +45,6 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 />
-
         </LinearLayout>
 
         <LinearLayout
@@ -56,34 +52,28 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
             <TextView
                 android:text="Gender: "
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
             <RadioGroup
                 android:id="@+id/SUGenderID"
                 android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <RadioButton
                     android:text="Male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
                 <RadioButton
                     android:text="Female"
                     android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
             </RadioGroup>
-
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +81,6 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +93,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -112,7 +100,6 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -125,30 +112,25 @@
                 android:inputType="textPassword"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DOB: "
                 android:textStyle="bold"
                 android:textSize="20sp"/>
-
-
             <EditText
                 android:id="@+id/SUDateID"
                 android:hint="DD/MM/YYYY"
                 android:layout_width="130dp"
                 android:inputType="date"
-                android:layout_marginLeft="42dp"
+                android:layout_marginLeft="43dp"
                 android:layout_height="wrap_content" />
-
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -157,7 +139,6 @@
                 android:layout_gravity="center"
                 android:id="@+id/SUCalendarIconID"
                 />
-
         </LinearLayout>
 
         <LinearLayout
@@ -165,28 +146,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Team: "
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-
+                android:textSize="20sp"
+                android:textStyle="bold" />
             <Spinner
                 android:layout_width="200dp"
                 android:id="@+id/SUTeamID"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="27dp"
                 android:entries="@array/team_names"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"/>
 
-            </Spinner>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manager: "
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <EditText
+                android:id="@+id/SUManagerID"
+                android:hint="Line manager's name"
+                android:layout_marginLeft="5dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Button
             android:id="@+id/SUsignUpID"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="SIGN UP"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
@@ -198,9 +195,10 @@
             android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:textStyle="italic"
-            android:layout_marginTop="10dp"/>
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
 

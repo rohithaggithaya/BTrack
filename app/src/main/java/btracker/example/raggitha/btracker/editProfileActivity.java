@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,9 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,7 +28,7 @@ import java.util.Calendar;
 public class editProfileActivity extends AppCompatActivity {
 
     private Button updateButton, cancelButton;
-    private EditText updateName, updateDOB;
+    private EditText updateName, updateDOB, updateManager;
     private Spinner updateTeam;
     private TextView EPEmail, EPGender;
     private Calendar calendar = Calendar.getInstance();
@@ -43,7 +39,7 @@ public class editProfileActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialog;
     private FirebaseDatabase firebaseDatabase;
 
-    private  String currentGender, currentEmail, currentName, currentDOB, currentTeam;
+    private  String currentGender, currentEmail, currentName, currentDOB, currentTeam, currentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +54,7 @@ public class editProfileActivity extends AppCompatActivity {
         EPEmail = (TextView) findViewById(R.id.EPEmailID);
         calendarIcon = (ImageView) findViewById(R.id.EPCalendarIconID);
         EPGender = (TextView) findViewById(R.id.EPGenderID);
+        updateManager = (EditText) findViewById(R.id.EPManagerID) ;
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -158,22 +155,24 @@ public class editProfileActivity extends AppCompatActivity {
         int spinnerPosition = myAdap.getPosition(spinnerValue);
         updateTeam.setSelection(spinnerPosition);
 
-        updateDOB.setText(ds.getValue(UserData.class).getDOB());
+        currentDOB = ds.getValue(UserData.class).getDOB();
+        updateDOB.setText(currentDOB);
         currentEmail = ds.getValue(UserData.class).getEmail();
         currentGender = ds.getValue(UserData.class).getGender();
-        currentName = ds.getValue(UserData.class).getName();
-        currentDOB = ds.getValue(UserData.class).getDOB();
-        currentTeam = ds.getValue(UserData.class).getTeam();
         EPGender.setText(currentGender);
+        currentManager = ds.getValue(UserData.class).getManager();
+        updateManager.setText(currentManager);
+        currentName = ds.getValue(UserData.class).getName();
+        currentTeam = ds.getValue(UserData.class).getTeam();
     }
-
 
     private void updateProfile() {
         String newName = updateName.getText().toString().trim();
         String newTeam = updateTeam.getSelectedItem().toString().trim();
         String newDOB = updateDOB.getText().toString().trim();
+        String newManager = updateManager.getText().toString().trim();
 
-        if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)))
+        if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)))
         {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setIcon(R.drawable.alerticon);
@@ -183,7 +182,7 @@ public class editProfileActivity extends AppCompatActivity {
             ad.show();
         }
         else {
-            UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender);
+            UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender, newManager);
             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(ud);
             Toast.makeText(getApplicationContext(), "Update Successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(editProfileActivity.this, profileActivity.class));

@@ -1,24 +1,21 @@
 package btracker.example.raggitha.btracker;
 
-import java.util.Date;
 
-/**
- * Created by raggitha on 06-Apr-17.
- */
 
 public class UserData {
-    private String Name, Gender, Email, Team, DOB;
+    private String Name, Gender, Email, Team, DOB, Manager;
 
 
     public UserData(){
 
     }
-    public UserData(String name, String DOFB, String team, String email, String gender) {
+    public UserData(String name, String DOFB, String team, String email, String gender, String manager) {
         Name = name;
         Gender = gender;
         Email = email;
         Team = team;
         this.DOB = DOFB;
+        Manager = manager;
     }
 
     public String getName() {
@@ -37,6 +34,18 @@ public class UserData {
         Name = name;
     }
 
+    public String getTeam() {
+        return Team;
+    }
+
+    public String getDOB() {
+        return this.DOB;
+    }
+
+    public String getManager() {
+        return Manager;
+    }
+
     public void setGender(String gender) {
         Gender = gender;
     }
@@ -53,11 +62,9 @@ public class UserData {
         this.DOB = DOB;
     }
 
-    public String getTeam() {
-        return Team;
-    }
+    public void setManager(String manager) { Manager = manager; }
 
-    public String getDOB() {
-        return this.DOB;
-    }
+
+
+
 }

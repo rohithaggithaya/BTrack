@@ -26,14 +26,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Calendar;
 
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText enteredName;
+    private EditText enteredName, managerName;
     private RadioGroup genderGroup;
     private RadioButton checkedButton;
     private EditText emailID;
@@ -65,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
         signIn = (TextView) findViewById(R.id.SULoginID);
         password = (EditText) findViewById(R.id.SUPasswordID);
         calendarIcon = (ImageView) findViewById(R.id.SUCalendarIconID);
-
+        managerName = (EditText) findViewById(R.id.SUManagerID);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
@@ -120,6 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
         String Enteredpassword = password.getText().toString().trim();
         String name = enteredName.getText().toString().trim();
         String dob = DOB.getText().toString().trim();
+        String Manager = managerName.getText().toString().trim();
 
         if (TextUtils.isEmpty(name))
         {
@@ -146,6 +146,12 @@ public class SignUpActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(dob))
         {
             DOB.setError("Required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(Manager))
+        {
+            managerName.setError("Required");
             return;
         }
 
@@ -197,8 +203,9 @@ public class SignUpActivity extends AppCompatActivity {
         int i = genderGroup.getCheckedRadioButtonId();
         checkedButton =(RadioButton) findViewById(i);
         String gender = checkedButton.getText().toString().trim();
+        String Manager = managerName.getText().toString().trim();
 
-        UserData user= new UserData(name, dob, team, email, gender);
+        UserData user= new UserData(name, dob, team, email, gender, Manager);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
 
         UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()

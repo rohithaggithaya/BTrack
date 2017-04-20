@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,14 +31,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
-
 
 public class profileActivity extends AppCompatActivity {
 
     private ImageView profileIcon;
     private TextView profileName;
-    private TextView profileGender, profileEmail, profileDOB, profileTeam;
+    private TextView profileGender, profileEmail, profileDOB, profileTeam, profileManager;
     private ImageView editImage;
 
     private ProgressDialog progressDialog;
@@ -65,6 +62,7 @@ public class profileActivity extends AppCompatActivity {
         profileDOB = (TextView) findViewById(R.id.pfDOBID);
         profileTeam = (TextView) findViewById(R.id.pfTeamID);
         editImage = (ImageView) findViewById(R.id.pfEditID);
+//        profileManager = (TextView) findViewById(R.id.pfManagerID);
 
         progressDialog = new ProgressDialog(this);
 
@@ -202,6 +200,7 @@ public class profileActivity extends AppCompatActivity {
             profileDOB.setText(ds.getValue(UserData.class).getDOB());
             profileEmail.setText(ds.getValue(UserData.class).getEmail());
             profileGender.setText(ds.getValue(UserData.class).getGender());
+            /*profileManager.setText(ds.getValue(UserData.class).getManager());*/
             updateProfilePic();
     }
 
@@ -240,6 +239,7 @@ public class profileActivity extends AppCompatActivity {
             StorageReference filePath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
             filePath.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @SuppressWarnings("VisibleForTests")
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();

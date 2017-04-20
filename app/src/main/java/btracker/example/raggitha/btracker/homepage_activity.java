@@ -64,6 +64,7 @@ public class homepage_activity extends AppCompatActivity {
                     birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
                     birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
                     birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());
+                    birthdayHashMap.put("ManagerKey",ds.getValue(UserData.class).getManager());
                     birthdaysListMap.add(birthdayHashMap);
                 }
 
@@ -78,6 +79,7 @@ public class homepage_activity extends AppCompatActivity {
                         intent.putExtra("DOBKey",birthdaysListMap.get(position).get("DOBKey"));
                         intent.putExtra("TeamKey",birthdaysListMap.get(position).get("TeamKey"));
                         intent.putExtra("EmailKey",birthdaysListMap.get(position).get("EmailKey"));
+                        intent.putExtra("ManagerKey",birthdaysListMap.get(position).get("ManagerKey"));
                         intent.putExtra("GenderKey",birthdaysListMap.get(position).get("GenderKey"));
                         intent.putExtra("curUserNameKey",dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(UserData.class).getName());
                         startActivity(intent);
