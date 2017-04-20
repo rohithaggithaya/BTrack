@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +31,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.net.URI;
 
 
 public class profileActivity extends AppCompatActivity {
@@ -48,7 +51,7 @@ public class profileActivity extends AppCompatActivity {
     private String userID;
 
     private static final int GALLERY_INTENT = 2;
-    private static final int CAMERA_REQUEST_CODE = 1;
+    //private static final int CAMERA_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,20 +109,22 @@ public class profileActivity extends AppCompatActivity {
         profileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(profileActivity.this);
+                //below part of code gives alert dialog with options of "Choose from Gallery" and "Capture an image"
+                //parked for time being. Will be out in future versions.
+
+                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(profileActivity.this);
                 String items[] = {"Choose from Gallery", "Capture an image"};
                 alertDialog.setTitle("Choose an option");
                 alertDialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0)
-                        {
+                        {*/
                             Intent intent = new Intent(Intent.ACTION_PICK);
                             intent.setType("image/*");
                             startActivityForResult(intent, GALLERY_INTENT);
-                        }
+                        /*}
                         else
-                            //Toast.makeText(getApplicationContext(),"Camera",Toast.LENGTH_SHORT).show();
                         {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intent, CAMERA_REQUEST_CODE);
@@ -127,7 +132,7 @@ public class profileActivity extends AppCompatActivity {
                     }
                 });
                 AlertDialog ad = alertDialog.create();
-                ad.show();
+                ad.show();*/
             }
         });
     }
@@ -208,11 +213,12 @@ public class profileActivity extends AppCompatActivity {
                 UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
                         .setPhotoUri(uri)
                         .build();
+
                 firebaseAuth.getCurrentUser().updateProfile(userProfile);
+                Picasso.with(profileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileIcon);
             }
         });
 
-        Picasso.with(profileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileIcon);
     }
 
     @Override
@@ -224,12 +230,13 @@ public class profileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uri = data.getData();
+
         if((requestCode == GALLERY_INTENT) && (resultCode == RESULT_OK))
         {
             progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
+            Uri uri = data.getData();
             StorageReference filePath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
             filePath.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -239,14 +246,22 @@ public class profileActivity extends AppCompatActivity {
                             Picasso.with(profileActivity.this).load(taskSnapshot.getDownloadUrl()).centerCrop().fit().into(profileIcon);
                             Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
                         }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(),"Failed! Please try again",Toast.LENGTH_SHORT).show();
+                        }
                     });
         }
 
-        if((requestCode == CAMERA_REQUEST_CODE) && (resultCode == RESULT_OK))
+        //below part of code handles image captured from camera. parked for time being. Will be out in future versions.
+        /*if((requestCode == CAMERA_REQUEST_CODE) && (resultCode == RESULT_OK))
         {
             progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
+            Uri uri = data.getData();
             StorageReference filepath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
             filepath.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -256,6 +271,6 @@ public class profileActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
                         }
                     });
-        }
+        }*/
     }
 }

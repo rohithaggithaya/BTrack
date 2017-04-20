@@ -59,7 +59,7 @@ public class BirthdayListViewAdapter extends BaseAdapter {
             mBirthdays = birthdays.get(position);
 
             ListName.setText(mBirthdays.get("NameKey"));
-            ListDob.setText(mBirthdays.get("DOBKey").substring(0,5));
+            ListDob.setText(mBirthdays.get("DOBKey"));
             ListTeam.setText(mBirthdays.get("TeamKey"));
 
         }

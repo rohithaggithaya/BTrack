@@ -60,7 +60,7 @@ public class homepage_activity extends AppCompatActivity {
                         continue;
                     HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
                     birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
-                    birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB());
+                    birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB().substring(0,5));
                     birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
                     birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
                     birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());

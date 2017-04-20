@@ -9,188 +9,111 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.homeProfileActivity">
 
-    <include layout="@layout/content_home_profile" />
+    <ImageView
+        android:contentDescription="Profile icon"
+        android:layout_width="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="200dp"
+        android:id="@+id/hmpfIconID"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/proficon"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hmpfNameID"
+        android:text="Name"
+        android:textAlignment="center"
+        android:layout_below="@+id/hmpfIconID"
+        android:textSize="35sp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"/>
 
-                <ImageView
-                    android:contentDescription="Profile icon"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:id="@+id/hmpfIconID"
-                    android:layout_marginLeft="15dp"
-                    android:src="@drawable/proficon"/>
+    <TextView
+        android:text="M/F"
+        android:textColor="#0e0e0e"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/hmpfNameID"
+        android:id="@+id/hmpfGenderID"
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/hmpfNameID"
-                    android:text="Name"
-                    android:textSize="22sp"
-                    android:layout_marginLeft="15dp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+    <ImageView
+        android:id="@+id/hmpfGenderIconID"
+        android:layout_toLeftOf="@+id/hmpfGenderID"
+        android:layout_alignBottom="@+id/hmpfGenderID"
+        android:src="@drawable/maleicon"
+        android:layout_width="35dp"
+        android:layout_marginRight="5dp"
+        android:layout_height="35dp" />
 
-                <ImageView
-                    android:contentDescription="Edit Icon"
-                    android:id="@+id/hmPfEmailIconID"
-                    android:src="@drawable/emailicon"
-                    android:layout_width="40dp"
-                    android:layout_gravity="center"
-                    android:layout_height="40dp" />
-            </LinearLayout>
+    <TextView
+        android:text=" DD/MM/YYYY"
+        android:textColor="#0e0e0e"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/hmpfDOBID"
+        android:layout_below="@+id/hmpfGenderID"
+        android:layout_marginTop="5dp"
+        android:textStyle="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/hmpfBdayIconID"
+        android:layout_toLeftOf="@+id/hmpfDOBID"
+        android:layout_alignBottom="@+id/hmpfDOBID"
+        android:src="@drawable/birthday_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp" />
 
-            <ImageView
-                android:layout_width="400dp"
-                android:layout_height="87dp"
-                android:src="@drawable/bgrnd"
-                android:layout_marginTop="30dp"
-                android:id="@+id/profileData1" />
+    <TextView
+        android:text="xyz@nokia.com"
+        android:textColor="#0e0e0e"
+        android:textSize="20sp"
+        android:id="@+id/hmpfEmailID"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/hmpfDOBID"
+        android:textStyle="normal"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_width="400dp"
-                android:layout_height="87dp"
-                android:src="@drawable/bgrnd"
-                android:layout_marginTop="10dp"
-                android:id="@+id/profileData2" />
+    <TextView
+        android:text="GDC_XYZ"
+        android:id="@+id/hmpfTeamID"
+        android:textColor="#0e0e0e"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/hmpfEmailID"
+        android:textStyle="normal"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/profileDate4"
-                android:layout_width="400dp"
-                android:layout_height="87dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/bgrnd" />
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/hmpfTeamIconID"
+        android:layout_toLeftOf="@+id/hmpfTeamID"
+        android:layout_alignBottom="@+id/hmpfTeamID"
+        android:src="@drawable/teamicon"
+        android:layout_marginRight="5dp"/>
 
-            <ImageView
-                android:layout_width="400dp"
-                android:layout_height="87dp"
-                android:src="@drawable/bgrnd"
-                android:layout_marginTop="10dp"
-                android:id="@+id/profileData3" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="87dp"
-            android:id="@+id/bg1layout"
-            android:layout_marginTop="100dp">
-
-            <TextView
-                android:text="Gender: "
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="30dp"
-                android:textColor="#ffee"
-                android:textSize="25sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text="M/F"
-                android:textColor="#ffee"
-                android:textSize="20sp"
-                android:id="@+id/hmpfGenderID"
-                android:layout_marginTop="20dp"
-                android:textStyle="italic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:id="@+id/bg2layout"
-            android:layout_below="@+id/bg1layout">
-
-            <TextView
-                android:text="DOB: "
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:textColor="#ffee"
-                android:textSize="25sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text=" DD/MM/YYYY"
-                android:textColor="#ffee"
-                android:textSize="20sp"
-                android:layout_gravity="center"
-                android:id="@+id/hmpfDOBID"
-                android:textStyle="italic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
-            android:layout_below="@+id/bg2layout"
-            android:id="@+id/bg3layout"
-            >
-
-            <TextView
-                android:text="Email: "
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:textColor="#ffee"
-                android:textSize="25sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text="xyz@nokia.com"
-                android:textColor="#ffee"
-                android:textSize="20sp"
-                android:id="@+id/hmpfEmailID"
-                android:layout_gravity="center"
-                android:textStyle="italic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_below="@+id/bg3layout"
-            >
-
-            <TextView
-                android:text="Team: "
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:textColor="#ffee"
-                android:textSize="25sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text="GDC_XYZ"
-                android:id="@+id/hmpfTeamID"
-                android:textColor="#ffee"
-                android:textSize="20sp"
-                android:layout_gravity="center"
-                android:textStyle="italic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+    <ImageView
+        android:contentDescription="Email Icon"
+        android:id="@+id/hmPfEmailIconID"
+        android:src="@drawable/emailicon"
+        android:layout_width="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp" />
 
 </RelativeLayout>
