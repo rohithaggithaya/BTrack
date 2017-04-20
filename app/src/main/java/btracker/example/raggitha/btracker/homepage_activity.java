@@ -130,13 +130,13 @@ public class homepage_activity extends AppCompatActivity {
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
-            body.append("I could find a bug while using it.\n ");
-            body.append("Please find below details on the same \n \n");
+            body.append("I found a bug while using B-Track app.\n ");
+            body.append("Please do the needful and verify this. Details below.\n \n");
             body.append("/* Enter your bug details here */ \n");
             body.append("\n Regards, \n");
             body.append(firebaseAuth.getCurrentUser().getDisplayName());
-            String developers[] = {"varunvgnc@gmail.com","aggithaya@gmail.com"};
-            String developers2[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
+            String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
+            String developers2[] = {"varunvgnc@gmail.com","aggithaya@gmail.com"};
 
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","",null));
             intent.putExtra(Intent.EXTRA_SUBJECT, "B-Track - Bug Report by " + firebaseAuth.getCurrentUser().getDisplayName());
