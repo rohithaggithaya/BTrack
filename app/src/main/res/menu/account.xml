@@ -13,10 +13,18 @@
         android:title="Change Password" />
 
     <item
+        android:id="@+id/reportBugID"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="Report Bug" />
+
+    <item
+        android:id="@+id/aboutID"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="About Us" />
+
+    <item
         android:id="@+id/logoutID"
         android:actionViewClass="android.support.v7.widget.SearchView"
         android:title="Log out" />
-
-
 
 </menu>
