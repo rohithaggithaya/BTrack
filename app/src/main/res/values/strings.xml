@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BTracker</string>
+    <string name="app_name">B-Track</string>
 
     <array name="team_names">
         <item>Select Team</item>

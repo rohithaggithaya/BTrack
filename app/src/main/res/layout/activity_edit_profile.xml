@@ -4,19 +4,28 @@
     android:id="@+id/activity_edit_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.editProfileActivity">
 
+
+    <ImageView
+        android:src="@drawable/editprofileicon"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/EPIconID"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/EPTitle"
+        android:layout_below="@+id/EPIconID"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -172,36 +181,24 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
 
             <Button
                 android:id="@+id/EPUpdateButtonID"
-                android:text="UPDATE"
+                android:background="@drawable/updateicon"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="120dp"
+                android:layout_height="80dp" />
 
             <Button
                 android:id="@+id/EPCancelButtonID"
-                android:text="Cancel"
+                android:background="@drawable/cancelicon"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="115dp"
                 android:layout_marginLeft="20dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="80dp" />
 
         </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:text="Let's Edit Your Profile"
-        android:textSize="25dp"
-        android:id="@+id/EPTitle"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:layout_marginTop="49dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

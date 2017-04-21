@@ -4,14 +4,43 @@
     android:id="@+id/activity_forgot_pass"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.ForgotPassActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/fpLinearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/userNameIconID"
+            android:src="@drawable/usernameicon"
+            android:layout_width="30dp"
+            android:baselineAlignBottom="true"
+            android:layout_height="30dp" />
+
+        <EditText
+            android:hint="Your registered mail ID here"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/forgotmailID"
+            android:textSize="18sp"
+            />
+
+    </LinearLayout>
+
     <TextView
-        android:text="After all you are human!"
+        android:text="After all you are a human!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -19,8 +48,10 @@
         android:id="@+id/forgotTitle1ID"
         android:textSize="23sp"
         android:layout_centerHorizontal="true" />
+
     <TextView
         android:text="Let's reset it"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/forgotTitle1ID"
@@ -30,24 +61,14 @@
         android:textSize="23sp"
         android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:hint="Your registered mail ID here"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:id="@+id/forgotmailID"
-        android:textSize="18sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/resetButton"
+        android:background="@drawable/reseticon"
         android:textStyle="bold"
-        android:layout_below="@+id/forgotmailID"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/fpLinearLayout"
         android:layout_centerHorizontal="true"
-        android:text="Reset"
         android:textColor="#5e5e5e"/>
 
 </RelativeLayout>
