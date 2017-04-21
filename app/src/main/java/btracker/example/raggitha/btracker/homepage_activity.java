@@ -7,8 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -165,13 +162,7 @@ public class homepage_activity extends AppCompatActivity {
             finish();
         }
 
-        else if (item.getItemId() == R.id.aboutID)
-        {
-            Toast.makeText(getApplicationContext(),"About pressed", Toast.LENGTH_SHORT).show();
-        }
-
-        else
-
+        else if(item.getItemId() == R.id.reportBugID)
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
@@ -185,6 +176,24 @@ public class homepage_activity extends AppCompatActivity {
 
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","",null));
             intent.putExtra(Intent.EXTRA_SUBJECT, "B-Track - Bug Report by " + firebaseAuth.getCurrentUser().getDisplayName());
+            intent.putExtra(Intent.EXTRA_EMAIL, developers);
+            intent.putExtra(Intent.EXTRA_CC, developers2);
+            intent.putExtra(Intent.EXTRA_TEXT, body.toString());
+            startActivity(intent);
+        }
+
+        else
+        {
+            StringBuilder body = new StringBuilder();
+            body.append("Hello B-Track Team, \n \n");
+            body.append("/* Please fill in your feedback/grievances */ \n");
+            body.append("\n Regards, \n");
+            body.append(firebaseAuth.getCurrentUser().getDisplayName());
+            String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
+            String developers2[] = {"varunvgnc@gmail.com","aggithaya@gmail.com"};
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","",null));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "B-Track - " + firebaseAuth.getCurrentUser().getDisplayName()+" wants to cantact you");
             intent.putExtra(Intent.EXTRA_EMAIL, developers);
             intent.putExtra(Intent.EXTRA_CC, developers2);
             intent.putExtra(Intent.EXTRA_TEXT, body.toString());
