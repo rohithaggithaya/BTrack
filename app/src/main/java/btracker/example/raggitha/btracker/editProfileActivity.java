@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -252,12 +251,14 @@ public class editProfileActivity extends profileActivity {
         if(!newDOB.matches("[0-9][0-9]/[0-9][0-9]/[12][09][0-9][0-9]"))
         {
             updateDOB.setError("Invalid");
+            updateDOB.requestFocus();
             return;
         }
 
         if(newDOB.equals(new SimpleDateFormat("dd/MM/yyyy").format(new Date())))
         {
             updateDOB.setError("Invalid");
+            updateDOB.requestFocus();
             return;
         }
 
@@ -271,6 +272,7 @@ public class editProfileActivity extends profileActivity {
         if(ddate.after(new Date()))
         {
             updateDOB.setError("Invalid");
+            updateDOB.requestFocus();
             return;
         }
 
