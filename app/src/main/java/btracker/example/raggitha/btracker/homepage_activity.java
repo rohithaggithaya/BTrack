@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class homepage_activity extends AppCompatActivity {
+
+    private Spinner selectTeamFilter;
 
     private ListView birthdaysList;
     private BirthdayListViewAdapter birthdayListViewAdapter;
@@ -49,47 +52,63 @@ public class homepage_activity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference();
         birthdaysList = (ListView) findViewById(R.id.homepageBListID);
 
+        selectTeamFilter = (Spinner) findViewById(R.id.hpTeamFilterID);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                birthdaysListMap.clear();
-                for(DataSnapshot ds: dataSnapshot.getChildren())
-                {
-                    if(ds.getValue(UserData.class).getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
-                        continue;
-                    HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
-                    birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
-                    birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB().substring(0,5));
-                    birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
-                    birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
-                    birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());
-                    birthdayHashMap.put("ManagerKey",ds.getValue(UserData.class).getManager());
-                    birthdaysListMap.add(birthdayHashMap);
-                }
-
-                birthdayListViewAdapter = new BirthdayListViewAdapter(getApplicationContext(),birthdaysListMap);
-                birthdaysList.setAdapter(birthdayListViewAdapter);
-
-                birthdaysList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent= new Intent(homepage_activity.this,homeProfileActivity.class);
-                        intent.putExtra("NameKey",birthdaysListMap.get(position).get("NameKey"));
-                        intent.putExtra("DOBKey",birthdaysListMap.get(position).get("DOBKey"));
-                        intent.putExtra("TeamKey",birthdaysListMap.get(position).get("TeamKey"));
-                        intent.putExtra("EmailKey",birthdaysListMap.get(position).get("EmailKey"));
-                        intent.putExtra("ManagerKey",birthdaysListMap.get(position).get("ManagerKey"));
-                        intent.putExtra("GenderKey",birthdaysListMap.get(position).get("GenderKey"));
-                        intent.putExtra("curUserNameKey",dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(UserData.class).getName());
-                        startActivity(intent);
-                        finish();
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        birthdaysListMap.clear();
+                        for(DataSnapshot ds: dataSnapshot.getChildren())
+                        {
+                            if(ds.getValue(UserData.class).getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
+                                continue;
+                            if(!selectTeamFilter.getSelectedItem().toString().equals("ALL"))
+                            {
+                                if(!ds.getValue(UserData.class).getTeam().equals(selectTeamFilter.getSelectedItem().toString()))
+                                    continue;
+                            }
+                            HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
+                            birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
+                            birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB().substring(0,5));
+                            birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
+                            birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
+                            birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());
+                            birthdayHashMap.put("ManagerKey",ds.getValue(UserData.class).getManager());
+                            birthdaysListMap.add(birthdayHashMap);
+                        }
+
+                        birthdayListViewAdapter = new BirthdayListViewAdapter(getApplicationContext(),birthdaysListMap);
+                        birthdaysList.setAdapter(birthdayListViewAdapter);
+
+                        birthdaysList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent= new Intent(homepage_activity.this,homeProfileActivity.class);
+                                intent.putExtra("NameKey",birthdaysListMap.get(position).get("NameKey"));
+                                intent.putExtra("DOBKey",birthdaysListMap.get(position).get("DOBKey"));
+                                intent.putExtra("TeamKey",birthdaysListMap.get(position).get("TeamKey"));
+                                intent.putExtra("EmailKey",birthdaysListMap.get(position).get("EmailKey"));
+                                intent.putExtra("ManagerKey",birthdaysListMap.get(position).get("ManagerKey"));
+                                intent.putExtra("GenderKey",birthdaysListMap.get(position).get("GenderKey"));
+                                intent.putExtra("curUserNameKey",dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(UserData.class).getName());
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });

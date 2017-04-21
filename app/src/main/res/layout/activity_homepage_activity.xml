@@ -20,11 +20,35 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="15dp"
+        android:id="@+id/linearLayoutID"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Filter Team"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:entries="@array/team_names2"
+            android:id="@+id/hpTeamFilterID"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="50dp">
+
+        </Spinner>
+    </LinearLayout>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:id="@+id/homepageBListID"
-        android:layout_below="@+id/relativeLayout"
+        android:layout_below="@+id/linearLayoutID"
         android:divider="#010421"
         android:dividerHeight="1dp"
         android:layout_alignParentLeft="true"
