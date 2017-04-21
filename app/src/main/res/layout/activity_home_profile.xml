@@ -16,7 +16,7 @@
         android:layout_height="200dp"
         android:id="@+id/hmpfIconID"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/proficon"/>
+        android:src="@drawable/malepficon"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,6 +84,14 @@
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/EPEmailIconID"
+        android:src="@drawable/emailicon2"
+        android:layout_toLeftOf="@+id/hmpfEmailID"
+        android:layout_alignBottom="@+id/hmpfEmailID"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
 
     <TextView
         android:text="Line Manager"

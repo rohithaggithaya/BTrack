@@ -7,8 +7,8 @@ public class UserData {
 
 
     public UserData(){
-
     }
+
     public UserData(String name, String DOFB, String team, String email, String gender, String manager) {
         Name = name;
         Gender = gender;

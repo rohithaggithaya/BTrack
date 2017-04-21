@@ -45,10 +45,15 @@ public class homeProfileActivity extends AppCompatActivity {
         hmManager.setText(extras.get("ManagerKey").toString());
 
 
-        if(extras.get("GenderKey").toString().equals("Male"))
+        if(extras.get("GenderKey").toString().equals("Male")) {
             genderIcon.setImageResource(R.drawable.maleicon);
+            hmProfileIcon.setImageResource(R.drawable.malepficon);
+        }
         else
+        {
             genderIcon.setImageResource(R.drawable.femaleicon);
+            hmProfileIcon.setImageResource(R.drawable.femalepficon);
+        }
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(extras.get("EmailKey").toString());
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

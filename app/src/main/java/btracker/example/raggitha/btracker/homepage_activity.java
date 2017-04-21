@@ -1,9 +1,14 @@
 package btracker.example.raggitha.btracker;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -56,6 +62,9 @@ public class homepage_activity extends AppCompatActivity {
         birthdaysList = (ListView) findViewById(R.id.homepageBListID);
 
         selectTeamFilter = (Spinner) findViewById(R.id.hpTeamFilterID);
+
+        if(!netowrkIsAvailable())
+            Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
 
         selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -199,8 +208,14 @@ public class homepage_activity extends AppCompatActivity {
             }
         });
         alertDialog.setNegativeButton("No", null);
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
         AlertDialog dialog = alertDialog.create();
         dialog.show();
+    }
+
+    private boolean netowrkIsAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

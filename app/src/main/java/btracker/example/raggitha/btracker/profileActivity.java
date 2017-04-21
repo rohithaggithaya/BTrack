@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListViewCompat;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,13 +34,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class profileActivity extends AppCompatActivity {
 
     private ImageView profileIcon;
     private TextView profileName;
-    private TextView profileGender, profileEmail, profileDOB, profileTeam, profileManager;
     private ImageView editImage;
+    private ListView pfDetailsListView;
 
     private ProgressDialog progressDialog;
 
@@ -47,9 +52,11 @@ public class profileActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private StorageReference storageReference;
     private String userID;
+    private profileListViewAdapter adapter;
+
+    private static int gender;
 
     private static final int GALLERY_INTENT = 2;
-    //private static final int CAMERA_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +65,8 @@ public class profileActivity extends AppCompatActivity {
 
         profileIcon = (ImageView) findViewById(R.id.pfIconID);
         profileName = (TextView) findViewById(R.id.pfNameID);
-        profileGender = (TextView) findViewById(R.id.pfGenderID);
-        profileEmail = (TextView) findViewById(R.id.pfEmailID);
-        profileDOB = (TextView) findViewById(R.id.pfDOBID);
-        profileTeam = (TextView) findViewById(R.id.pfTeamID);
         editImage = (ImageView) findViewById(R.id.pfEditID);
-//        profileManager = (TextView) findViewById(R.id.pfManagerID);
+        pfDetailsListView = (ListView) findViewById(R.id.pfprofileDetailsID);
 
         progressDialog = new ProgressDialog(this);
 
@@ -76,6 +79,16 @@ public class profileActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(userID).getValue(UserData.class).getGender().equals("Male"))
+                    gender=1;
+                else
+                    gender = 0;
+
+                if(gender==1)
+                    profileIcon.setImageResource(R.drawable.malepficon);
+                else
+                    profileIcon.setImageResource(R.drawable.femalepficon);
+
                 displayData(dataSnapshot);
             }
 
@@ -108,30 +121,26 @@ public class profileActivity extends AppCompatActivity {
         profileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //below part of code gives alert dialog with options of "Choose from Gallery" and "Capture an image"
-                //parked for time being. Will be out in future versions.
-
-                /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(profileActivity.this);
-                String items[] = {"Choose from Gallery", "Capture an image"};
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(profileActivity.this);
+                String items[] = {"Choose from Gallery", "Remove Profile Image"};
                 alertDialog.setTitle("Choose an option");
                 alertDialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0)
-                        {*/
+                        {
                             Intent intent = new Intent(Intent.ACTION_PICK);
                             intent.setType("image/*");
                             startActivityForResult(intent, GALLERY_INTENT);
-                        /*}
+                        }
                         else
                         {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                            removeProfilePic();
                         }
                     }
                 });
                 AlertDialog ad = alertDialog.create();
-                ad.show();*/
+                ad.show();
             }
         });
     }
@@ -190,19 +199,45 @@ public class profileActivity extends AppCompatActivity {
     }
 
     private void displayData(DataSnapshot dataSnapshot) {
+
         DataSnapshot ds = dataSnapshot.child(userID);
-            if (ds==null)
-            {
-                Toast.makeText(getApplicationContext(),"Sorry! Your profile details have been cleared.",Toast.LENGTH_SHORT).show();
-                return;
-            }
+
+        String pfGender = ds.getValue(UserData.class).getGender();
+        String pfDOB = ds.getValue(UserData.class).getDOB();
+        String pfEmail = ds.getValue(UserData.class).getEmail();
+        String pfManager = ds.getValue(UserData.class).getManager();
+        String pfTeam = ds.getValue(UserData.class).getTeam();
+
+        int title[] = {R.drawable.maleicon, R.drawable.emailicon , R.drawable.birthday_icon, R.drawable.linemanagericon, R.drawable.teamicon};
+
+        if(pfGender.equals("Male"))
+            title[0] = R.drawable.maleicon;
+        else
+            title[0] = R.drawable.femaleicon;
+
+        String values[] = {pfGender, pfEmail, pfDOB, pfManager, pfTeam};
+
+        ArrayList<HashMap<String,String>> pfDetailsList = new ArrayList<>();
+
+        if (ds==null)
+        {
+            Toast.makeText(getApplicationContext(),"Sorry! Your profile details have been cleared.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for(int i=0; i<title.length; i++)
+        {
+            HashMap<String, String> pfHashMap = new HashMap<>();
+            pfHashMap.put("pfTitleKey",String.valueOf(title[i]));
+            pfHashMap.put("pfValueKey",values[i]);
+
+            pfDetailsList.add(pfHashMap);
+        }
+
+        adapter = new profileListViewAdapter(getApplicationContext(),pfDetailsList);
+        pfDetailsListView.setAdapter(adapter);
 
             profileName.setText(ds.getValue(UserData.class).getName());
-            profileTeam.setText(ds.getValue(UserData.class).getTeam());
-            profileDOB.setText(ds.getValue(UserData.class).getDOB());
-            profileEmail.setText(ds.getValue(UserData.class).getEmail());
-            profileGender.setText(ds.getValue(UserData.class).getGender());
-            /*profileManager.setText(ds.getValue(UserData.class).getManager());*/
             updateProfilePic();
     }
 
@@ -214,7 +249,6 @@ public class profileActivity extends AppCompatActivity {
                 UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
                         .setPhotoUri(uri)
                         .build();
-
                 firebaseAuth.getCurrentUser().updateProfile(userProfile);
                 Picasso.with(profileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileIcon);
             }
@@ -274,5 +308,25 @@ public class profileActivity extends AppCompatActivity {
                         }
                     });
         }*/
+    }
+
+
+    private void removeProfilePic() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+        progressDialog.setMessage("Removing...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        storageReference.delete()
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Removed profile image successfully.", Toast.LENGTH_SHORT).show();
+                    if(gender==1)
+                        profileIcon.setImageResource(R.drawable.malepficon);
+                    else
+                        profileIcon.setImageResource(R.drawable.femalepficon);
+                }
+            });
     }
 }

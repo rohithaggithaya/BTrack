@@ -158,7 +158,7 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
             }
         });
         alertDialog.setNegativeButton("No", null);
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
         AlertDialog dialog = alertDialog.create();
         dialog.show();
     }
