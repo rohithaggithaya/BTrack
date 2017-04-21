@@ -2,9 +2,9 @@ package btracker.example.raggitha.btracker;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class updatePasswordActivity extends AppCompatActivity {
@@ -45,48 +46,75 @@ public class updatePasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String curpass = currentPassword.getText().toString().trim();
-                String newpass = newPassword.getText().toString().trim();
+                final String newpass = newPassword.getText().toString().trim();
                 String retypepass = retypedNewPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(curpass)) {
                     currentPassword.setError("Required");
+                    currentPassword.requestFocus();
                     return;
                 }
                 if (TextUtils.isEmpty(newpass)) {
                     newPassword.setError("Required");
+                    newPassword.requestFocus();
                     return;
                 }
                 if (TextUtils.isEmpty(retypepass)) {
                     retypedNewPassword.setError("Required");
+                    retypedNewPassword.requestFocus();
                     return;
                 }
                 if (!retypepass.equals(newpass)) {
                     retypedNewPassword.setError("Passwords do not match");
+                    retypedNewPassword.requestFocus();
                     return;
                 }
                 if (curpass.equals(newpass)) {
                     newPassword.setError("New password cannot be same as old password");
+                    newPassword.requestFocus();
                     return;
                 }
 
                 progressDialog.show();
 
-                firebaseAuth.getCurrentUser().updatePassword(retypepass)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                firebaseAuth.signInWithEmailAndPassword(firebaseAuth.getCurrentUser().getEmail(), curpass)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful())
+                                {
+                                    firebaseAuth.getCurrentUser().updatePassword(newpass)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        progressDialog.dismiss();
+                                                        firebaseAuth.signOut();
+                                                        startActivity(new Intent(updatePasswordActivity.this, SignInActivity.class));
+                                                        finish();
+                                                        Toast.makeText(getApplicationContext(), "Password Update Successful", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    else {
+                                                        onFailure(task.getException());
+                                                        newPassword.requestFocus();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                }
+
+                                            });
+                                }
+                                else
+                                {
+                                    //Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
-                                    firebaseAuth.signOut();
-
-                                    startActivity(new Intent(updatePasswordActivity.this, SignInActivity.class));
-                                    finish();
-                                    Toast.makeText(getApplicationContext(), "Password Update Successful", Toast.LENGTH_SHORT).show();
-                                } else
-                                    onFailure(task.getException());
+                                    currentPassword.setError("Invalid Old Password");
+                                    currentPassword.requestFocus();
+                                    return;
+                                }
                             }
-
                         });
+
+
             }
         });
     }

@@ -3,8 +3,6 @@ package btracker.example.raggitha.btracker;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,10 +26,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,6 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(name))
         {
             enteredName.setError("Required");
+            enteredName.requestFocus();
             return;
         }
 
@@ -148,25 +141,28 @@ public class SignUpActivity extends AppCompatActivity {
                 emailID.setError("Required");
             else
                 emailID.setError("Invalid email");
-
+            emailID.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(Enteredpassword))
         {
             password.setError("Required");
+            password.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(dob))
         {
             DOB.setError("Required");
+            DOB.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(Manager))
         {
             managerName.setError("Required");
+            managerName.requestFocus();
             return;
         }
 
@@ -184,13 +180,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         if(!dob.matches("[0-9][0-9]/[0-9][0-9]/[12][09][0-9][0-9]"))
         {
-                DOB.setError("Invalid");
-                return;
+            DOB.setError("Invalid");
+            DOB.requestFocus();
+            return;
         }
 
         if(dob.equals(new SimpleDateFormat("dd/MM/yyyy").format(new Date())))
         {
             DOB.setError("Invalid");
+            DOB.requestFocus();
             return;
         }
 
@@ -204,6 +202,7 @@ public class SignUpActivity extends AppCompatActivity {
         if(ddate.after(new Date()))
         {
             DOB.setError("Invalid");
+            DOB.requestFocus();
             return;
         }
 

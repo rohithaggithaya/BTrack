@@ -45,6 +45,7 @@ public class homepage_activity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,7 @@ public class homepage_activity extends AppCompatActivity {
         if(!netowrkIsAvailable())
             Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
 
-        selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 databaseReference.addValueEventListener(new ValueEventListener() {
@@ -80,25 +81,22 @@ public class homepage_activity extends AppCompatActivity {
                                     continue;
                             }
 
-                            String sdate =ds.getValue(UserData.class).getDOB();
-                            Date ddate = new Date();
+                            Date ddate = null;
                             try {
-                                ddate = new SimpleDateFormat("dd/MMM").parse(sdate);
+                                ddate = new SimpleDateFormat("dd/MM/yyyy").parse(ds.getValue(UserData.class).getDOB());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
-                            sdate = new SimpleDateFormat("dd/MMM").format(ddate);
-
-
                             HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
                             birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
-                            birthdayHashMap.put("DOBKey",sdate);
+                            birthdayHashMap.put("DOBKey",new SimpleDateFormat("dd/MMM").format(ddate));
                             birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
                             birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
                             birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());
                             birthdayHashMap.put("ManagerKey",ds.getValue(UserData.class).getManager());
                             birthdaysListMap.add(birthdayHashMap);
+
                         }
 
                         birthdayListViewAdapter = new BirthdayListViewAdapter(getApplicationContext(),birthdaysListMap);

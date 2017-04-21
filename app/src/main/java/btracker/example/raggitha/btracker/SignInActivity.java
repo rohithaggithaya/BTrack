@@ -81,12 +81,14 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
         if (TextUtils.isEmpty(usname))
         {
             userName.setError("Required");
+            userName.requestFocus();
             return;
         }
 
         if(TextUtils.isEmpty(pword))
         {
             password.setError("Required");
+            password.requestFocus();
             return;
         }
 
@@ -99,7 +101,8 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
-                if(task.isSuccessful()){
+                if(task.isSuccessful())
+                {
                     if(!firebaseAuth.getCurrentUser().isEmailVerified())
                     {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
