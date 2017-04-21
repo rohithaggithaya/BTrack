@@ -23,7 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class editProfileActivity extends AppCompatActivity {
 
@@ -171,6 +174,31 @@ public class editProfileActivity extends AppCompatActivity {
         String newTeam = updateTeam.getSelectedItem().toString().trim();
         String newDOB = updateDOB.getText().toString().trim();
         String newManager = updateManager.getText().toString().trim();
+
+        if(!newDOB.matches("[0-9][0-9]/[0-9][0-9]/[12][09][0-9][0-9]"))
+        {
+            updateDOB.setError("Invalid");
+            return;
+        }
+
+        if(newDOB.equals(new SimpleDateFormat("dd/MM/yyyy").format(new Date())))
+        {
+            updateDOB.setError("Invalid");
+            return;
+        }
+
+        Date ddate = new Date();
+        try {
+            ddate = new SimpleDateFormat("dd/MM/yyyy").parse(newDOB);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(ddate.after(new Date()))
+        {
+            updateDOB.setError("Invalid");
+            return;
+        }
 
         if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)))
         {

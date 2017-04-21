@@ -24,7 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class homepage_activity extends AppCompatActivity {
@@ -70,9 +73,21 @@ public class homepage_activity extends AppCompatActivity {
                                 if(!ds.getValue(UserData.class).getTeam().equals(selectTeamFilter.getSelectedItem().toString()))
                                     continue;
                             }
+
+                            String sdate =ds.getValue(UserData.class).getDOB();
+                            Date ddate = new Date();
+                            try {
+                                ddate = new SimpleDateFormat("dd/MMM").parse(sdate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            sdate = new SimpleDateFormat("dd/MMM").format(ddate);
+
+
                             HashMap<String, String> birthdayHashMap = new HashMap<String, String>();
                             birthdayHashMap.put("NameKey",ds.getValue(UserData.class).getName());
-                            birthdayHashMap.put("DOBKey",ds.getValue(UserData.class).getDOB().substring(0,5));
+                            birthdayHashMap.put("DOBKey",sdate);
                             birthdayHashMap.put("TeamKey",ds.getValue(UserData.class).getTeam());
                             birthdayHashMap.put("EmailKey",ds.getValue(UserData.class).getEmail());
                             birthdayHashMap.put("GenderKey",ds.getValue(UserData.class).getGender());

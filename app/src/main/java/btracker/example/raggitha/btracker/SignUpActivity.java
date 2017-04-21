@@ -27,7 +27,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -167,14 +170,30 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if(!dob.matches("[0-9][0-9]/[0-9][0-9]/[2][0][01][0-7]") && !dob.matches("[0-9][0-9]/[0-9][0-9]/[1][9][0-9][0-9]"))
+        if(!dob.matches("[0-9][0-9]/[0-9][0-9]/[12][09][0-9][0-9]"))
         {
                 DOB.setError("Invalid");
                 return;
         }
 
+        if(dob.equals(new SimpleDateFormat("dd/MM/yyyy").format(new Date())))
+        {
+            DOB.setError("Invalid");
+            return;
+        }
 
+        Date ddate = new Date();
+        try {
+            ddate = new SimpleDateFormat("dd/MM/yyyy").parse(dob);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+        if(ddate.after(new Date()))
+        {
+            DOB.setError("Invalid");
+            return;
+        }
 
         progressDialog.setMessage("Creating Account...");
         progressDialog.setCancelable(false);
