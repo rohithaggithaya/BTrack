@@ -76,6 +76,13 @@ public class profileActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid();
 
+        profileIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Edit profile to update Image", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -115,32 +122,6 @@ public class profileActivity extends AppCompatActivity {
                 AlertDialog diag;
                 diag = alertDialog.create();
                 diag.show();
-            }
-        });
-
-        profileIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(profileActivity.this);
-                String items[] = {"Choose from Gallery", "Remove Profile Image"};
-                alertDialog.setTitle("Choose an option");
-                alertDialog.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0)
-                        {
-                            Intent intent = new Intent(Intent.ACTION_PICK);
-                            intent.setType("image/*");
-                            startActivityForResult(intent, GALLERY_INTENT);
-                        }
-                        else
-                        {
-                            removeProfilePic();
-                        }
-                    }
-                });
-                AlertDialog ad = alertDialog.create();
-                ad.show();
             }
         });
     }
@@ -241,15 +222,11 @@ public class profileActivity extends AppCompatActivity {
             updateProfilePic();
     }
 
-    private void updateProfilePic() {
+    protected void updateProfilePic() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
-                        .setPhotoUri(uri)
-                        .build();
-                firebaseAuth.getCurrentUser().updateProfile(userProfile);
                 Picasso.with(profileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileIcon);
             }
         });
@@ -308,25 +285,5 @@ public class profileActivity extends AppCompatActivity {
                         }
                     });
         }*/
-    }
-
-
-    private void removeProfilePic() {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
-        progressDialog.setMessage("Removing...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        storageReference.delete()
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Removed profile image successfully.", Toast.LENGTH_SHORT).show();
-                    if(gender==1)
-                        profileIcon.setImageResource(R.drawable.malepficon);
-                    else
-                        profileIcon.setImageResource(R.drawable.femalepficon);
-                }
-            });
     }
 }
