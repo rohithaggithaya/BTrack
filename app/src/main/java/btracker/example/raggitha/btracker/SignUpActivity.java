@@ -155,6 +155,26 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
+        if(genderGroup.getCheckedRadioButtonId()==-1)
+        {
+            Toast.makeText(getApplicationContext(),"Please select Gender",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(TEAM.getSelectedItem().toString().equals("Select Team"))
+        {
+            Toast.makeText(getApplicationContext(),"Please select Team",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!dob.matches("[0-9][0-9]/[0-9][0-9]/[2][0][01][0-7]") && !dob.matches("[0-9][0-9]/[0-9][0-9]/[1][9][0-9][0-9]"))
+        {
+                DOB.setError("Invalid");
+                return;
+        }
+
+
+
 
         progressDialog.setMessage("Creating Account...");
         progressDialog.setCancelable(false);

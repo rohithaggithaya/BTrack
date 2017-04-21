@@ -21,6 +21,15 @@
         <item>OTHERS</item>
     </array>
 
+    <array name="team_names3">
+        <item>NBN TEST</item>
+        <item>NBN Dev</item>
+        <item>CHORUS TEST</item>
+        <item>CHORUS DEV</item>
+        <item>NLT</item>
+        <item>OTHERS</item>
+    </array>
+
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
