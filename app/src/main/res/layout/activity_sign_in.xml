@@ -25,17 +25,18 @@
 
     <ImageView
         android:id="@+id/siIconID"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/uploadicon"
-        android:layout_width="170dp"
-        android:layout_height="170dp" />
+        android:src="@drawable/logowithname"
+        android:layout_width="270dp"
+        android:layout_height="150dp" />
 
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/siIconID"
         android:layout_centerHorizontal="true">
 

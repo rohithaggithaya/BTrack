@@ -54,6 +54,12 @@ public class homepage_activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //below code displays a back button on action bar.
+        /*
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+*/
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -160,13 +166,15 @@ public class homepage_activity extends AppCompatActivity {
             finish();
         }
 
-        else if(item.getItemId() == R.id.reportBugID)
+        //below code gives "Report Bug" option in tool bar and on click takes user to send email with details populated.
+        //if this is uncommented, make sure you make changes in menu.xml also.
+        /*else if(item.getItemId() == R.id.reportBugID)
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
             body.append("I found a bug while using B-Track app.\n ");
             body.append("Please do the needful and verify this. Details below.\n \n");
-            body.append("/* Enter your bug details here */ \n");
+            body.append("*//* Enter your bug details here *//* \n");
             body.append("\n Regards, \n");
             body.append(firebaseAuth.getCurrentUser().getDisplayName());
             String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
@@ -178,7 +186,7 @@ public class homepage_activity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_CC, developers2);
             intent.putExtra(Intent.EXTRA_TEXT, body.toString());
             startActivity(intent);
-        }
+        }*/
 
         else
         {
