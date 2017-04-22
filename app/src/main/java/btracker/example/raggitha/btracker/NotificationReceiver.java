@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -61,7 +60,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                     {
                         //checking if the dob returned is of the current user. If yes, wishing him.
                         if(ds.getValue(UserData.class).getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
-                            setNotificationself(context, ds);// Say hbday to self
+                            setNotificationself(context);// Say hbday to self
                         else
                             //checking if the dob returned is of different user. if yes, asking current user to wish him/her.
                             setNotification1(context, ds);//Say happy birthday to ds.getValue(UserData.class).getName();
@@ -85,10 +84,13 @@ public class NotificationReceiver extends BroadcastReceiver {
 
 
     //wishing current user on his/her birthday
-    private void setNotificationself(Context context, DataSnapshot dataSnapshot) {
+    private void setNotificationself(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent repeating_intent = new Intent(context, MainActivity.class);
-        repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        repeating_intent.setAction(Intent.ACTION_MAIN);
+        repeating_intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         NotificationCompat.InboxStyle bigData = new NotificationCompat.InboxStyle();
 
@@ -127,7 +129,10 @@ public class NotificationReceiver extends BroadcastReceiver {
         repeating_intent.putExtra("ManagerKey",dataSnapshot.getValue(UserData.class).getManager());
         repeating_intent.putExtra("GenderKey",dataSnapshot.getValue(UserData.class).getGender());
         repeating_intent.putExtra("curUserNameKey",firebaseAuth.getCurrentUser().getDisplayName());
-        repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        repeating_intent.setAction(Intent.ACTION_MAIN);
+        repeating_intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
         NotificationCompat.InboxStyle bigData = new NotificationCompat.InboxStyle();
 
@@ -137,8 +142,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 ,};
 
         bigData.setBigContentTitle("Reminder from B-Track");
-        for (int i=0; i<content.length; i++)
-            bigData.addLine(content[i]);
+        for (String aContent : content) bigData.addLine(aContent);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -164,7 +168,11 @@ public class NotificationReceiver extends BroadcastReceiver {
         repeating_intent.putExtra("ManagerKey",dataSnapshot.getValue(UserData.class).getManager());
         repeating_intent.putExtra("GenderKey",dataSnapshot.getValue(UserData.class).getGender());
         repeating_intent.putExtra("curUserNameKey",firebaseAuth.getCurrentUser().getDisplayName());
-        repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //repeating_intent.putExtra("CallingKey","Notification");
+        repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        repeating_intent.setAction(Intent.ACTION_MAIN);
+        repeating_intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
 
         NotificationCompat.InboxStyle bigData = new NotificationCompat.InboxStyle();

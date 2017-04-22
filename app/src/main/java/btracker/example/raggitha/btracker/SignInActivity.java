@@ -60,9 +60,9 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
                 userlogin();
                 Calendar calendar = Calendar.getInstance();
 
-                calendar.set(Calendar.HOUR_OF_DAY, 20);
-                calendar.set(Calendar.MINUTE, 45);
-                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 43);
+                calendar.set(Calendar.SECOND, 30);
 
                 Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);

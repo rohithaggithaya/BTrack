@@ -121,6 +121,7 @@ public class homepage_activity extends AppCompatActivity {
                                 intent.putExtra("ManagerKey",birthdaysListMap.get(position).get("ManagerKey"));
                                 intent.putExtra("GenderKey",birthdaysListMap.get(position).get("GenderKey"));
                                 intent.putExtra("curUserNameKey",firebaseAuth.getCurrentUser().getDisplayName());
+                                //intent.putExtra("CallingKey","Home");
                                 startActivity(intent);
                                 finish();
                             }

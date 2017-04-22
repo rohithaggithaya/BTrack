@@ -63,14 +63,18 @@
         <activity android:name=".ForgotPassActivity"
             android:label=""
             android:screenOrientation="portrait"/>
+
         <activity android:name=".editProfileActivity"
             android:label="Edit Profile"
             android:screenOrientation="portrait"/>
+
         <activity android:name=".updatePasswordActivity"
             android:label=""
             android:screenOrientation="portrait"/>
+
         <activity android:name=".homeProfileActivity"
             android:label="View Profile"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <receiver android:name=".NotificationReceiver"/>
