@@ -107,6 +107,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.cakeicon)
                 .setSound(defaultSoundUri)
+                .setContentText("Expand to view content")
                 .setStyle(bigData)
                 .setContentTitle("Notification from B-Track")
                 .setAutoCancel(true);
@@ -146,6 +147,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.cakeicon)
                 .setSound(defaultSoundUri)
                 .setStyle(bigData)
+                .setContentText("Expand to view content")
                 .setContentTitle("Notification from B-Track")
                 .setAutoCancel(true);
         notificationManager.notify(100, builder.build());
@@ -183,6 +185,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setSound(defaultSoundUri)
                 .setSmallIcon(R.drawable.cakeicon)
                 .setStyle(bigData)
+                .setContentText("Expand to view content")
                 .setContentText("Don't forget to wish!")
                 .setContentTitle("Notification from B-Track")
                 .setAutoCancel(true);
