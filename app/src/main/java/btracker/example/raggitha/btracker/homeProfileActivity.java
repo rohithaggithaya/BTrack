@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -79,6 +80,13 @@ public class homeProfileActivity extends AppCompatActivity {
                 Emailintent.putExtra(Intent.EXTRA_TEXT,body.toString());
 
                 startActivity(Emailintent);
+            }
+        });
+
+        hmProfileIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Bummer! You cannot expand the image", Toast.LENGTH_SHORT).show();
             }
         });
     }

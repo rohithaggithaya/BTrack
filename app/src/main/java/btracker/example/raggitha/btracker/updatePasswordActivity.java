@@ -89,8 +89,7 @@ public class updatePasswordActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         progressDialog.dismiss();
-                                                        firebaseAuth.signOut();
-                                                        startActivity(new Intent(updatePasswordActivity.this, SignInActivity.class));
+                                                        startActivity(new Intent(updatePasswordActivity.this, homepage_activity.class));
                                                         finish();
                                                         Toast.makeText(getApplicationContext(), "Password Update Successful", Toast.LENGTH_SHORT).show();
                                                     }
@@ -107,7 +106,7 @@ public class updatePasswordActivity extends AppCompatActivity {
                                 {
                                     //Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
-                                    currentPassword.setError("Invalid Old Password");
+                                    currentPassword.setError("Invalid old Password");
                                     currentPassword.requestFocus();
                                     return;
                                 }

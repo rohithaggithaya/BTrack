@@ -52,7 +52,7 @@ public class editProfileActivity extends profileActivity {
     private FirebaseDatabase firebaseDatabase;
     private StorageReference storageReference;
 
-    private  String currentGender, currentEmail, currentName, currentDOB, currentTeam, currentManager, userID;
+    private  String currentGender, currentEmail, currentName, currentDOB, currentTeam, currentManager;
     private static final int GALLERY_INTENT = 2;
     private ProgressDialog progressDialog;
     private boolean imageUploaded = false, removeProfileImage = false, updateProfileImage = false;
@@ -81,7 +81,6 @@ public class editProfileActivity extends profileActivity {
         alertDialog = new AlertDialog.Builder(this);
         databaseReference = firebaseDatabase.getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
-        userID = firebaseAuth.getCurrentUser().getUid();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,30 +105,35 @@ public class editProfileActivity extends profileActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(editProfileActivity.this);
-                String items[] = {"Choose from Gallery", "Remove Profile Image"};
-                alertDialog.setTitle("Choose an option");
-                alertDialog.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0)
-                        {
-                            Intent intent = new Intent(Intent.ACTION_PICK);
-                            intent.setType("image/*");
-                            startActivityForResult(intent, GALLERY_INTENT);
-                            updateProfileImage = true;
-                        }
-                        else
-                        {
-                            profileImage.setImageResource(R.drawable.editprofileicon);
-                            removeProfileImage = true;
-                            imageUploaded = true;
-                        }
-                    }
-                });
-                AlertDialog ad = alertDialog.create();
-                ad.show();
-
+                if(profileImage.getDrawable().getConstantState() != getResources().getDrawable(R.drawable.editprofileicon).getConstantState()) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(editProfileActivity.this);
+                    String items[] = {"Choose from Gallery", "Remove Profile Image"};
+                    alertDialog.setTitle("Choose an option");
+                    alertDialog.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                startActivityForResult(intent, GALLERY_INTENT);
+                                updateProfileImage = true;
+                            } else {
+                                    profileImage.setImageResource(R.drawable.editprofileicon);
+                                    removeProfileImage = true;
+                                    imageUploaded = true;
+                                }
+                            }
+                        });
+                    AlertDialog ad = alertDialog.create();
+                    ad.show();
+                }
+                else
+                {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, GALLERY_INTENT);
+                    updateProfileImage = true;
+                }
             }
         });
 
