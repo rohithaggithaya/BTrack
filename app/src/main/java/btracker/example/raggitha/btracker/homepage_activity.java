@@ -67,6 +67,8 @@ public class homepage_activity extends AppCompatActivity {
 
         selectTeamFilter = (Spinner) findViewById(R.id.hpTeamFilterID);
 
+
+
         if(!netowrkIsAvailable())
             Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
 
@@ -118,7 +120,7 @@ public class homepage_activity extends AppCompatActivity {
                                 intent.putExtra("EmailKey",birthdaysListMap.get(position).get("EmailKey"));
                                 intent.putExtra("ManagerKey",birthdaysListMap.get(position).get("ManagerKey"));
                                 intent.putExtra("GenderKey",birthdaysListMap.get(position).get("GenderKey"));
-                                intent.putExtra("curUserNameKey",dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(UserData.class).getName());
+                                intent.putExtra("curUserNameKey",firebaseAuth.getCurrentUser().getDisplayName());
                                 startActivity(intent);
                                 finish();
                             }
