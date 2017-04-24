@@ -204,12 +204,16 @@
 
         <Button
             android:id="@+id/SUsignUpID"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/signupicon"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:text="REGIster"
+            android:textSize="17sp"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ "
             android:layout_gravity="center_horizontal"
-            android:layout_width="55dp"
-            android:layout_height="55dp" />
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
