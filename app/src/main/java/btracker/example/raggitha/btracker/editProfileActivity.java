@@ -282,7 +282,10 @@ public class editProfileActivity extends profileActivity {
         }
 
         if(!currentTeam.equals(newTeam))
+        {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(currentTeam);
             FirebaseMessaging.getInstance().subscribeToTopic(newTeam);
+        }
 
         if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)) && (imageUploaded == false))
         {
