@@ -290,7 +290,7 @@ public class editProfileActivity extends profileActivity {
             ad.show();
         }
         else {
-            UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender, newManager);
+            UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender, newManager, firebaseAuth.getCurrentUser().isEmailVerified());
             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(ud);
             Toast.makeText(getApplicationContext(), "Update Successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(editProfileActivity.this, profileActivity.class));

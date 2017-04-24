@@ -67,10 +67,11 @@ public class homepage_activity extends AppCompatActivity {
 
         selectTeamFilter = (Spinner) findViewById(R.id.hpTeamFilterID);
 
-
-
         if(!netowrkIsAvailable())
             Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
+
+        if(firebaseAuth.getCurrentUser().isEmailVerified())
+            databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userVerified").setValue(true);
 
         selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
             @Override
@@ -88,6 +89,9 @@ public class homepage_activity extends AppCompatActivity {
                                 if(!ds.getValue(UserData.class).getTeam().equals(selectTeamFilter.getSelectedItem().toString()))
                                     continue;
                             }
+
+                            if(!ds.getValue(UserData.class).getUserVerified())
+                                continue;
 
                             Date ddate = null;
                             try {

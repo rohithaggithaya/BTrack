@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +22,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class SignInActivity extends AppCompatActivity implements OnFailureListener {
+public class SignInActivity extends SignUpActivity implements OnFailureListener {
 
     private EditText userName;
     private EditText password;
@@ -43,8 +46,9 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
         password = (EditText) findViewById(R.id.passwordID);
         signInButton = (Button) findViewById(R.id.mainSignInID);
         signUpTextView = (TextView) findViewById(R.id.mainSignUpID);
-        firebaseAuth = FirebaseAuth.getInstance();
         forgotButton = (TextView) findViewById(R.id.mainForgotID) ;
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(this);
 
@@ -58,16 +62,6 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
             @Override
             public void onClick(View v) {
                 userlogin();
-                Calendar calendar = Calendar.getInstance();
-
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-                calendar.set(Calendar.MINUTE, 43);
-                calendar.set(Calendar.SECOND, 30);
-
-                Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
             }
         });
 
@@ -147,6 +141,25 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
                     {
                         Toast.makeText(getApplicationContext(),"Logged in Successfully!",Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SignInActivity.this,homepage_activity.class));
+                        //configuring calendar to push notification everyday using alarm service
+                        //writing this here to trigger notification only after verifying the user and signing in.
+                        Calendar calendar = Calendar.getInstance();
+                        Calendar now = Calendar.getInstance();
+
+                        calendar.set(Calendar.HOUR_OF_DAY, 15);
+                        calendar.set(Calendar.MINUTE, 10);
+                        calendar.set(Calendar.SECOND, 00);
+
+                        if (now.after(calendar))
+                        {
+                            Log.d("Hey," , "Added a day");
+                            calendar.add(Calendar.DATE,1);
+                        }
+
+                        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                         finish();
                     }
                 }

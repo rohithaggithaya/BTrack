@@ -54,6 +54,9 @@ public class SignUpActivity extends AppCompatActivity {
     //For date Picker
     private Calendar calendar = Calendar.getInstance();
 
+    //flag which is used to display data of only verified users.
+    private boolean userVerified;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,8 +253,9 @@ public class SignUpActivity extends AppCompatActivity {
         checkedButton =(RadioButton) findViewById(i);
         String gender = checkedButton.getText().toString().trim();
         String Manager = managerName.getText().toString().trim();
+        userVerified = false;
 
-        UserData user= new UserData(name, dob, team, email, gender, Manager);
+        UserData user= new UserData(name, dob, team, email, gender, Manager, userVerified);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
 
         UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()

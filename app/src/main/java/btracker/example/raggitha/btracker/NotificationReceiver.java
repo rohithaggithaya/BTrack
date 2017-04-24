@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -29,6 +30,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private int setNote1Counter1, setNoteCounter2;
 
     private Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -38,6 +40,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+
+        setNote1Counter1 = 1000;
+        setNoteCounter2 = 100;
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,7 +108,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         for (int i=0; i<content.length; i++)
             bigData.addLine(content[i]);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 101, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 99, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
@@ -114,7 +119,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setContentTitle("Notification from B-Track")
                 .setAutoCancel(true);
 
-        notificationManager.notify(101, builder.build());
+        notificationManager.notify(99, builder.build());
     }
 
 
@@ -144,7 +149,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         bigData.setBigContentTitle("Reminder from B-Track");
         for (String aContent : content) bigData.addLine(aContent);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, setNote1Counter1, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
@@ -154,7 +159,8 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setContentText("Expand to view content")
                 .setContentTitle("Notification from B-Track")
                 .setAutoCancel(true);
-        notificationManager.notify(100, builder.build());
+        notificationManager.notify(setNote1Counter1, builder.build());
+        setNote1Counter1++;
     }
 
     //checking if the dob returned is of different user. if yes, asking current user to wish him/her.
@@ -186,7 +192,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         for (int i=0; i<content.length; i++)
             bigData.addLine(content[i]);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 102, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, setNoteCounter2, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
@@ -198,6 +204,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setContentTitle("Notification from B-Track")
                 .setAutoCancel(true);
 
-        notificationManager.notify(102, builder.build());
+        notificationManager.notify(setNoteCounter2, builder.build());
+        setNoteCounter2++;
     }
 }
