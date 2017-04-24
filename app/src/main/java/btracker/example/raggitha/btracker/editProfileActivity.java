@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -279,6 +280,9 @@ public class editProfileActivity extends profileActivity {
             updateDOB.requestFocus();
             return;
         }
+
+        if(!currentTeam.equals(newTeam))
+            FirebaseMessaging.getInstance().subscribeToTopic(newTeam);
 
         if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)) && (imageUploaded == false))
         {
