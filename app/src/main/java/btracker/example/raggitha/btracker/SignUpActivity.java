@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -254,6 +255,7 @@ public class SignUpActivity extends AppCompatActivity {
         String gender = checkedButton.getText().toString().trim();
         String Manager = managerName.getText().toString().trim();
         userVerified = false;
+        String tempTeam = team.replaceAll(" ", "");
 
         UserData user= new UserData(name, dob, team, email, gender, Manager, userVerified);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
@@ -263,6 +265,7 @@ public class SignUpActivity extends AppCompatActivity {
                 .build();
         USER.updateProfile(userProfile);
         databaseReference.child(USER.getUid()).setValue(user);
+        FirebaseMessaging.getInstance().subscribeToTopic(tempTeam);
     }
 
     @Override
