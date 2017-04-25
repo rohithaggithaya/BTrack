@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -78,16 +79,12 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Random rand = new Random();
-        int a = rand.nextInt(100);
-
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     registerUser();
             }
         });
-
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +252,8 @@ public class SignUpActivity extends AppCompatActivity {
         String gender = checkedButton.getText().toString().trim();
         String Manager = managerName.getText().toString().trim();
         userVerified = false;
-        String tempTeam = team.replaceAll(" ", "");
+        //below is to subscribe to topic. white spaces are not allowed hence the below line of code
+        //String tempTeam = team.replaceAll(" ", "");
 
         UserData user= new UserData(name, dob, team, email, gender, Manager, userVerified);
         FirebaseUser USER = firebaseAuth.getCurrentUser();
@@ -265,7 +263,8 @@ public class SignUpActivity extends AppCompatActivity {
                 .build();
         USER.updateProfile(userProfile);
         databaseReference.child(USER.getUid()).setValue(user);
-        FirebaseMessaging.getInstance().subscribeToTopic(tempTeam);
+        //will include this in next version.
+        /*FirebaseMessaging.getInstance().subscribeToTopic(tempTeam);*/
     }
 
     @Override

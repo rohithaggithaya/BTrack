@@ -58,6 +58,7 @@
                 android:id="@+id/userNameID"
                 android:layout_marginTop="10dp"
                 android:layout_width="200dp"
+                android:inputType="textEmailAddress"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"/>

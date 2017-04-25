@@ -281,11 +281,12 @@ public class editProfileActivity extends profileActivity {
             return;
         }
 
-        if(!currentTeam.equals(newTeam))
+        //will verify and update the below in next version. subscribing user in onclick listerer of sign up button
+/*        if(!currentTeam.equals(newTeam))
         {
             FirebaseMessaging.getInstance().unsubscribeFromTopic(currentTeam);
             FirebaseMessaging.getInstance().subscribeToTopic(newTeam);
-        }
+        }*/
 
         if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)) && (imageUploaded == false))
         {
