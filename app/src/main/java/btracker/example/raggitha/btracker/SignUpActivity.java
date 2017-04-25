@@ -136,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if(TextUtils.isEmpty(email)/*||((!email.contains("@nokia.com")))*/)
+        if(TextUtils.isEmpty(email)||((!email.contains("@nokia.com"))))
         {
             if(TextUtils.isEmpty(email))
                 emailID.setError("Required");
