@@ -12,6 +12,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.SignUpActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_centerHorizontal="true"
@@ -230,5 +236,6 @@
         android:layout_alignParentRight="true"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark" />
-
+    </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

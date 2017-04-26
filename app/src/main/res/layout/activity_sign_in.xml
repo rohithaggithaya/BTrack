@@ -13,117 +13,124 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.SignInActivity">
 
-    <TextView
-        android:text="Let's Log In"
-        android:layout_centerHorizontal="true"
-        android:textSize="23dp"
-        android:layout_marginTop="30dp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
-
-    <ImageView
-        android:id="@+id/siIconID"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/logowithname"
-        android:layout_width="270dp"
-        android:layout_height="150dp" />
-
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/siIconID"
-        android:layout_centerHorizontal="true">
-
-        <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollIndicators="none">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/userNameIconID"
-                android:src="@drawable/usernameicon"
-                android:layout_width="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="30dp" />
-
-            <EditText
-                android:hint="Enter Email"
-                android:id="@+id/userNameID"
-                android:layout_marginTop="10dp"
-                android:layout_width="200dp"
-                android:inputType="textEmailAddress"
+            <TextView
+                android:text="Let's Log In"
+                android:layout_centerHorizontal="true"
+                android:textSize="23dp"
+                android:layout_marginTop="30dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+                android:id="@+id/textView" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/siIconID"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/textView"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/logowithname"
+                android:layout_width="270dp"
+                android:layout_height="150dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/siIconID"
+                android:layout_centerHorizontal="true">
 
-        <ImageView
-            android:id="@+id/passwordIconID"
-            android:src="@drawable/passwordicon"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/passwordID"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:hint="Enter Password"
-            android:inputType="textPassword"
-            android:layout_gravity="center"
-            android:gravity="center"
-            />
+                    <ImageView
+                        android:id="@+id/userNameIconID"
+                        android:src="@drawable/usernameicon"
+                        android:layout_width="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="30dp" />
 
-    </LinearLayout>
+                    <EditText
+                        android:hint="Enter Email"
+                        android:id="@+id/userNameID"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="200dp"
+                        android:inputType="textEmailAddress"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
 
+                </LinearLayout>
 
-        <Button
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/mainSignInID"
-            android:background="@drawable/loginicon"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
 
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:text="Create account here."
-            android:layout_below="@+id/mainSignInID"
-            android:id="@+id/mainSignUpID"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Forgot Password"
-            android:layout_below="@+id/mainSignUpID"
-            android:id="@+id/mainForgotID"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            />
+                    <ImageView
+                        android:id="@+id/passwordIconID"
+                        android:src="@drawable/passwordicon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
 
-    </LinearLayout>
+                    <EditText
+                        android:id="@+id/passwordID"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Password"
+                        android:inputType="textPassword"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/mainSignInID"
+                    android:background="@drawable/loginicon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:text="Create account here."
+                    android:layout_below="@+id/mainSignInID"
+                    android:id="@+id/mainSignUpID"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Forgot Password"
+                    android:layout_below="@+id/mainSignUpID"
+                    android:id="@+id/mainForgotID"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -13,7 +13,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="btracker.example.raggitha.btracker.editProfileActivity">
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <ImageView
         android:src="@drawable/editprofileicon"
         android:layout_centerHorizontal="true"
@@ -203,4 +208,6 @@
 
         </LinearLayout>
     </LinearLayout>
+</RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
