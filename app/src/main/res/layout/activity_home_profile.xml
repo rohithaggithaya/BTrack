@@ -102,16 +102,15 @@
             android:layout_width="25dp"
             android:layout_height="25dp" />
 
-        <TextView
-            android:text="xyz@nokia.com"
-            android:textColor="#0e0e0e"
-            android:textSize="20sp"
-            android:id="@+id/hmpfEmailID"
-            android:textStyle="normal"
-            android:layout_marginLeft="12dp"
-            android:textAlignment="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:text="xyz@nokia.com"
+                android:textColor="#0e0e0e"
+                android:textSize="20sp"
+                android:id="@+id/hmpfEmailID"
+                android:textStyle="normal"
+                android:layout_marginLeft="12dp"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content" />
 
     </LinearLayout>
 

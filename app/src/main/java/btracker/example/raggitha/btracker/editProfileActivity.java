@@ -27,7 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -278,6 +277,25 @@ public class editProfileActivity extends profileActivity {
         {
             updateDOB.setError("Invalid");
             updateDOB.requestFocus();
+            return;
+        }
+
+        if(newName.isEmpty()) {
+            updateName.setError("Required");
+            updateName.requestFocus();
+            return;
+        }
+
+        if(newDOB.isEmpty())
+        {
+            updateDOB.setError("Required");
+            updateDOB.requestFocus();
+            return;
+        }
+        if(newManager.isEmpty())
+        {
+            updateManager.setError("Required");
+            updateManager.requestFocus();
             return;
         }
 

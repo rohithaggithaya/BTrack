@@ -14,6 +14,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class homeProfileActivity extends AppCompatActivity {
 
     private ImageView hmProfileIcon,hmProfileEmailIcon;
@@ -46,8 +49,6 @@ public class homeProfileActivity extends AppCompatActivity {
         hmManager.setText(extras.get("ManagerKey").toString());
         //Caller = extras.get("CallingKey").toString();
 
-
-
         if(extras.get("GenderKey").toString().equals("Male")) {
             genderIcon.setImageResource(R.drawable.maleicon);
             hmProfileIcon.setImageResource(R.drawable.malepficon);
@@ -69,6 +70,11 @@ public class homeProfileActivity extends AppCompatActivity {
         hmProfileEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!extras.get("DOBKey").toString().equals(new SimpleDateFormat("dd/MMM").format(new Date())))
+                {
+                    Toast.makeText(getApplicationContext(),"Bummer! This option available only on "+extras.get("NameKey")+"'s Birthday",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 StringBuilder body = new StringBuilder();
                 String name = extras.get("NameKey").toString();
                 String toEmail = extras.get("EmailKey").toString();

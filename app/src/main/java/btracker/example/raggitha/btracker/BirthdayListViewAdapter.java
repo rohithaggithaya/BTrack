@@ -21,8 +21,8 @@ public class BirthdayListViewAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
 
-    public BirthdayListViewAdapter(Context context, ArrayList<HashMap<String, String>> data){
-
+    public BirthdayListViewAdapter(Context context, ArrayList<HashMap<String, String>> data)
+    {
         mContext = context;
         birthdays = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,8 +45,7 @@ public class BirthdayListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View view = convertView;
-
+        View view;
         if(convertView == null)
         {
             view = inflater.inflate(R.layout.list_row, null);
@@ -55,14 +54,28 @@ public class BirthdayListViewAdapter extends BaseAdapter {
             TextView ListDob = (TextView) view.findViewById(R.id.listDOBID);
             TextView ListTeam = (TextView) view.findViewById(R.id.listTeamID);
 
-            HashMap<String,String> mBirthdays = new HashMap<>();
+            HashMap<String,String> mBirthdays;
             mBirthdays = birthdays.get(position);
 
             ListName.setText(mBirthdays.get("NameKey"));
             ListDob.setText(mBirthdays.get("DOBKey"));
             ListTeam.setText(mBirthdays.get("TeamKey"));
+            return view;
         }
+        else
+        {
+            view = convertView;
+            TextView ListName = (TextView) view.findViewById(R.id.listNameID);
+            TextView ListDob = (TextView) view.findViewById(R.id.listDOBID);
+            TextView ListTeam = (TextView) view.findViewById(R.id.listTeamID);
 
-        return view;
+            HashMap<String,String> mBirthdays;
+            mBirthdays = birthdays.get(position);
+
+            ListName.setText(mBirthdays.get("NameKey"));
+            ListDob.setText(mBirthdays.get("DOBKey"));
+            ListTeam.setText(mBirthdays.get("TeamKey"));
+            return view;
+        }
     }
 }
