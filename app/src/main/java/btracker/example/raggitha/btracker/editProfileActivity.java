@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,8 +73,10 @@ public class editProfileActivity extends profileActivity {
         EPGender = (TextView) findViewById(R.id.EPGenderID);
         updateManager = (EditText) findViewById(R.id.EPManagerID) ;
         profileImage = (ImageView) findViewById(R.id.EPIconID);
-
+        ScrollView scrollView = (ScrollView) findViewById(R.id.epScrollView);
         progressDialog = new ProgressDialog(this);
+
+        scrollView.setVerticalScrollBarEnabled(false);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +27,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -74,10 +72,13 @@ public class SignUpActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.SUPasswordID);
         calendarIcon = (ImageView) findViewById(R.id.SUCalendarIconID);
         managerName = (EditText) findViewById(R.id.SUManagerID);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.suScrollView);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        scrollView.setVerticalScrollBarEnabled(false);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
