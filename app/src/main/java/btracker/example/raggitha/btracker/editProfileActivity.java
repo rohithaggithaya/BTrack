@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -51,11 +52,9 @@ public class editProfileActivity extends profileActivity {
     private FirebaseAuth firebaseAuth;
     private AlertDialog.Builder alertDialog;
     private FirebaseDatabase firebaseDatabase;
-    private StorageReference storageReference;
 
     private  String currentGender, currentEmail, currentName, currentDOB, currentTeam, currentManager;
     private static final int GALLERY_INTENT = 2;
-    private ProgressDialog progressDialog;
     private boolean imageUploaded = false, removeProfileImage = false, updateProfileImage = false;
 
     @Override
@@ -74,7 +73,6 @@ public class editProfileActivity extends profileActivity {
         updateManager = (EditText) findViewById(R.id.EPManagerID) ;
         profileImage = (ImageView) findViewById(R.id.EPIconID);
         ScrollView scrollView = (ScrollView) findViewById(R.id.epScrollView);
-        progressDialog = new ProgressDialog(this);
 
         scrollView.setVerticalScrollBarEnabled(false);
 
@@ -83,7 +81,6 @@ public class editProfileActivity extends profileActivity {
         EPEmail.setText(firebaseAuth.getCurrentUser().getEmail());
         alertDialog = new AlertDialog.Builder(this);
         databaseReference = firebaseDatabase.getReference();
-        storageReference = FirebaseStorage.getInstance().getReference();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,35 +105,43 @@ public class editProfileActivity extends profileActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(profileImage.getDrawable().getConstantState() != getResources().getDrawable(R.drawable.editprofileicon).getConstantState()) {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(editProfileActivity.this);
-                    String items[] = {"Choose from Gallery", "Remove Profile Image"};
-                    alertDialog.setTitle("Choose an option");
-                    alertDialog.setItems(items, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) {
-                                Intent intent = new Intent(Intent.ACTION_PICK);
-                                intent.setType("image/*");
-                                startActivityForResult(intent, GALLERY_INTENT);
-                                updateProfileImage = true;
-                            } else {
+                try
+                {
+                    if(profileImage.getDrawable().getConstantState() != getResources().getDrawable(R.drawable.editprofileicon).getConstantState()) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(editProfileActivity.this);
+                        String items[] = {"Choose from Gallery", "Remove Profile Image"};
+                        alertDialog.setTitle("Choose an option");
+                        alertDialog.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0) {
+                                    Intent intent = new Intent(Intent.ACTION_PICK);
+                                    intent.setType("image/*");
+                                    startActivityForResult(intent, GALLERY_INTENT);
+                                    updateProfileImage = true;
+                                } else {
                                     profileImage.setImageResource(R.drawable.editprofileicon);
                                     removeProfileImage = true;
                                     imageUploaded = true;
                                 }
                             }
                         });
-                    AlertDialog ad = alertDialog.create();
-                    ad.show();
+                        AlertDialog ad = alertDialog.create();
+                        ad.show();
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, GALLERY_INTENT);
+                        updateProfileImage = true;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, GALLERY_INTENT);
-                    updateProfileImage = true;
+                    Toast.makeText(getApplicationContext(),"Please wait...", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
 
@@ -185,8 +190,8 @@ public class editProfileActivity extends profileActivity {
 
     private void removeProfilePic() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
-        progressDialog.setMessage("Removing...");
-        progressDialog.setCancelable(false);
+        //progressDialog.setMessage("Removing...");
+        //progressDialog.setCancelable(false);
         //progressDialog.show();
         storageReference.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -350,7 +355,10 @@ public class editProfileActivity extends profileActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if((requestCode == GALLERY_INTENT) && (resultCode == RESULT_OK))
         {
-            progressDialog.setMessage("Uploading...");
+            Uri uri = data.getData();
+            profileImage.setImageURI(uri);
+            Picasso.with(editProfileActivity.this).load(uri).centerCrop().fit().into(profileImage);
+            /*progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
             Uri uri = data.getData();
@@ -375,7 +383,7 @@ public class editProfileActivity extends profileActivity {
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getApplicationContext(),"Failed! Please try again",Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    });*/
         }
     }
 
