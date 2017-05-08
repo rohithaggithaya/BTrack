@@ -32,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -218,19 +220,22 @@ public class profileActivity extends AppCompatActivity {
         adapter = new profileListViewAdapter(getApplicationContext(),pfDetailsList);
         pfDetailsListView.setAdapter(adapter);
 
-            profileName.setText(ds.getValue(UserData.class).getName());
-            updateProfilePic();
+        profileName.setText(ds.getValue(UserData.class).getName());
+        updateProfilePic();
     }
 
     protected void updateProfilePic() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(profileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileIcon);
+                Picasso.with(profileActivity.this)
+                        .load(uri)
+                        .fit().centerCrop()
+                        .into(profileIcon);
             }
         });
-
     }
 
     @Override
@@ -239,11 +244,11 @@ public class profileActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
+    /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if((requestCode == GALLERY_INTENT) && (resultCode == RESULT_OK))
+       *//* if((requestCode == GALLERY_INTENT) && (resultCode == RESULT_OK))
         {
             progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
@@ -267,9 +272,9 @@ public class profileActivity extends AppCompatActivity {
                         }
                     });
         }
-
+*//*
         //below part of code handles image captured from camera. parked for time being. Will be out in future versions.
-        /*if((requestCode == CAMERA_REQUEST_CODE) && (resultCode == RESULT_OK))
+        *//*if((requestCode == CAMERA_REQUEST_CODE) && (resultCode == RESULT_OK))
         {
             progressDialog.setMessage("Uploading...");
             progressDialog.setCancelable(false);
@@ -284,6 +289,6 @@ public class profileActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
                         }
                     });
-        }*/
-    }
+        }*//*
+    }*/
 }

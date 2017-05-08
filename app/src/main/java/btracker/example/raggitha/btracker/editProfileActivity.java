@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.DeadObjectException;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -39,7 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class editProfileActivity extends profileActivity {
+public class editProfileActivity extends AppCompatActivity {
 
     private Button updateButton, cancelButton;
     private EditText updateName, updateDOB, updateManager;
@@ -52,10 +56,16 @@ public class editProfileActivity extends profileActivity {
     private FirebaseAuth firebaseAuth;
     private AlertDialog.Builder alertDialog;
     private FirebaseDatabase firebaseDatabase;
+    private StorageReference storageReference;
 
     private  String currentGender, currentEmail, currentName, currentDOB, currentTeam, currentManager;
     private static final int GALLERY_INTENT = 2;
     private boolean imageUploaded = false, removeProfileImage = false, updateProfileImage = false;
+    private ProgressDialog progressDialog;
+    private Uri profileUri;
+    private int uploadCount = 0;
+
+    private static int WELCOME_DURATION = 4000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,8 @@ public class editProfileActivity extends profileActivity {
         EPEmail.setText(firebaseAuth.getCurrentUser().getEmail());
         alertDialog = new AlertDialog.Builder(this);
         databaseReference = firebaseDatabase.getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
+        progressDialog = new ProgressDialog(this);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -122,7 +134,7 @@ public class editProfileActivity extends profileActivity {
                                 } else {
                                     profileImage.setImageResource(R.drawable.editprofileicon);
                                     removeProfileImage = true;
-                                    imageUploaded = true;
+                                    /*imageUploaded = true;*/
                                 }
                             }
                         });
@@ -139,7 +151,16 @@ public class editProfileActivity extends profileActivity {
                 }
                 catch (Exception e)
                 {
-                    Toast.makeText(getApplicationContext(),"Please wait...", Toast.LENGTH_LONG).show();
+                    if(uploadCount>2)
+                    {
+                        Toast.makeText(getApplicationContext(),"Please try again...", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(editProfileActivity.this, profileActivity.class));
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Please wait...", Toast.LENGTH_SHORT).show();
+                        uploadCount++;
+                    }
                 }
 
             }
@@ -149,21 +170,21 @@ public class editProfileActivity extends profileActivity {
         {
             @Override
             public void onClick(View v) {
-                    alertDialog.setTitle("Update?");
-                    alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            updateProfile();
-                            updateProfilePic();
-                            if(removeProfileImage)
-                                removeProfilePic();
-                        }
-                    });
-                    alertDialog.setNegativeButton("No", null);
-                    AlertDialog dialog = alertDialog.create();
-                    dialog.show();
-                }
+                alertDialog.setTitle("Update?");
+                alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(imageUploaded)
+                            uploadProfileImage();
+                        updateProfile();
+                        if(removeProfileImage)
+                            removeProfilePic();
+                    }
+                });
+                alertDialog.setNegativeButton("No", null);
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
+            }
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -173,8 +194,6 @@ public class editProfileActivity extends profileActivity {
                 alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(updateProfileImage)
-                            removeProfilePic();
                         startActivity(new Intent(editProfileActivity.this,profileActivity.class));
                         finish();
                     }
@@ -188,6 +207,32 @@ public class editProfileActivity extends profileActivity {
         });
     }
 
+    private void uploadProfileImage() {
+        StorageReference filePath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+        progressDialog.setMessage("Updating profile...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        filePath.putFile(profileUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @SuppressWarnings("VisibleForTests")
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
+                        UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
+                                .setPhotoUri(profileUri)
+                                .build();
+                        firebaseAuth.getCurrentUser().updateProfile(userProfile);
+                        imageUploaded = true;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),"Failed! Please try again",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void removeProfilePic() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
         //progressDialog.setMessage("Removing...");
@@ -199,8 +244,8 @@ public class editProfileActivity extends profileActivity {
                     public void onSuccess(Void aVoid) {
                         //progressDialog.dismiss();
                         //Toast.makeText(getApplicationContext(),"Removed profile image successfully.", Toast.LENGTH_SHORT).show();
-                            profileImage.setImageResource(R.drawable.editprofileicon);
-                            imageUploaded = true;
+                        profileImage.setImageResource(R.drawable.editprofileicon);
+                        imageUploaded = true;
                     }
                 });
     }
@@ -314,7 +359,7 @@ public class editProfileActivity extends profileActivity {
             FirebaseMessaging.getInstance().subscribeToTopic(newTeam);
         }*/
 
-        if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)) && (imageUploaded == false))
+        if(newName.equals(currentName) && (newDOB.equals(currentDOB)) && (newTeam.equals(currentTeam)) && (newManager.equals(currentManager)) && (imageUploaded == false) && (removeProfileImage == false))
         {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setIcon(R.drawable.alerticon);
@@ -326,9 +371,14 @@ public class editProfileActivity extends profileActivity {
         else {
             UserData ud = new UserData(newName, newDOB, newTeam, currentEmail, currentGender, newManager, firebaseAuth.getCurrentUser().isEmailVerified());
             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).setValue(ud);
-            Toast.makeText(getApplicationContext(), "Update Successful!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(editProfileActivity.this, profileActivity.class));
-            finish();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(editProfileActivity.this, profileActivity.class));
+                    Toast.makeText(getApplicationContext(), "Update Successful!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            },WELCOME_DURATION);
         }
     }
 
@@ -355,35 +405,16 @@ public class editProfileActivity extends profileActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if((requestCode == GALLERY_INTENT) && (resultCode == RESULT_OK))
         {
-            Uri uri = data.getData();
-            profileImage.setImageURI(uri);
-            Picasso.with(editProfileActivity.this).load(uri).centerCrop().fit().into(profileImage);
-            /*progressDialog.setMessage("Uploading...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-            Uri uri = data.getData();
-            StorageReference filePath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
-            filePath.putFile(uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Picasso.with(editProfileActivity.this).load(taskSnapshot.getDownloadUrl()).centerCrop().fit().into(profileImage);
-                            Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
-                            UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
-                                    .setPhotoUri(taskSnapshot.getDownloadUrl())
-                                    .build();
-                            firebaseAuth.getCurrentUser().updateProfile(userProfile);
-                            imageUploaded = true;
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(),"Failed! Please try again",Toast.LENGTH_SHORT).show();
-                        }
-                    });*/
+            profileUri = data.getData();
+            profileImage.setImageURI(profileUri);
+            Picasso.with(editProfileActivity.this)
+                    .load(profileUri)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .centerCrop()
+                    .fit()
+                    .into(profileImage);
+            imageUploaded = true;
         }
     }
 
@@ -392,13 +423,22 @@ public class editProfileActivity extends profileActivity {
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
+                /*UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
                         .setPhotoUri(uri)
                         .build();
-                firebaseAuth.getCurrentUser().updateProfile(userProfile);
-                Picasso.with(editProfileActivity.this).load(firebaseAuth.getCurrentUser().getPhotoUrl()).fit().centerCrop().into(profileImage);
+                firebaseAuth.getCurrentUser().updateProfile(userProfile);*/
+                profileUri = uri;
+                Picasso.with(editProfileActivity.this).load(uri).fit().centerCrop().into(profileImage);
             }
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(progressDialog!=null){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 }

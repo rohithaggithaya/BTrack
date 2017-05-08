@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int WELCOME_DURATION = 3000;
+    private static int WELCOME_DURATION = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
