@@ -135,6 +135,7 @@ public class editProfileActivity extends AppCompatActivity {
                                     profileImage.setImageResource(R.drawable.editprofileicon);
                                     removeProfileImage = true;
                                     imageUploaded = false;
+
                                 }
                             }
                         });
