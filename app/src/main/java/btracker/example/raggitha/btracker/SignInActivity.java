@@ -144,17 +144,17 @@ public class SignInActivity extends SignUpActivity implements OnFailureListener 
                         //configuring calendar to push notification everyday using alarm service
                         //writing this here to trigger notification only after verifying the user and signing in.
                         Calendar calendar = Calendar.getInstance();
-                        Calendar now = Calendar.getInstance();
+                        //Calendar now = Calendar.getInstance();
 
                         calendar.set(Calendar.HOUR_OF_DAY, 9);
-                        calendar.set(Calendar.MINUTE, 00);
-                        calendar.set(Calendar.SECOND, 00);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
 
-                        if (now.after(calendar))
+                        /*if (now.after(calendar))
                         {
                             Log.d("Hey," , "Added a day");
                             calendar.add(Calendar.DATE,1);
-                        }
+                        }*/
 
                         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);

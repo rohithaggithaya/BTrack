@@ -41,11 +41,18 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
 
+        NotificationCompat.InboxStyle bigData = new NotificationCompat.InboxStyle();
+
+        bigData.setBigContentTitle(title);
+        bigData.addLine(messageBody);
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.cakeicon)
-                .setContentTitle(title)
+                .setStyle(bigData)
+                .setContentTitle("Notification from B-Track")
+                .setContentText("Expand to view the content")
                 .setContentText(messageBody)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

@@ -81,7 +81,14 @@ public class profileActivity extends AppCompatActivity {
         profileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Edit profile to update Image", Toast.LENGTH_SHORT).show();
+                try {
+                    if (profileIcon.getDrawable().getConstantState() != null)
+                        Toast.makeText(getApplicationContext(), "Edit profile to update Image", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getApplicationContext(),"Loading...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

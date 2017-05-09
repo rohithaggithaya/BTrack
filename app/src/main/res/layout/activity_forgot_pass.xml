@@ -65,13 +65,16 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="40dp"
+        android:layout_width="170dp"
         android:layout_height="40dp"
+        android:text="RESET PASSWORD"
         android:id="@+id/resetButton"
-        android:background="@drawable/reseticon"
+        android:textColor="#fafafa"
         android:textStyle="bold"
+        android:textSize="15sp"
+        android:background="@color/colorPrimary"
         android:layout_below="@+id/fpLinearLayout"
         android:layout_centerHorizontal="true"
-        android:textColor="#5e5e5e"/>
+        />
 
 </RelativeLayout>

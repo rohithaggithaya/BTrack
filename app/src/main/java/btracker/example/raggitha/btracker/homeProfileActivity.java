@@ -72,7 +72,7 @@ public class homeProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!extras.get("DOBKey").toString().equals(new SimpleDateFormat("dd/MMM").format(new Date())))
                 {
-                    Toast.makeText(getApplicationContext(),"Bummer! This option available only on "+extras.get("NameKey")+"'s Birthday",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No Spamming! The option available only on "+extras.get("NameKey")+"'s Birthday",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 StringBuilder body = new StringBuilder();
@@ -94,7 +94,14 @@ public class homeProfileActivity extends AppCompatActivity {
         hmProfileIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Bummer! You cannot expand the image", Toast.LENGTH_SHORT).show();
+                try{
+                    if(hmProfileIcon.getDrawable().getConstantState()!=null)
+                        Toast.makeText(getApplicationContext(),"Sorry! You cannot expand the image", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getApplicationContext(),"Loading...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

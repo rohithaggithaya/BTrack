@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,12 +61,12 @@ public class editProfileActivity extends AppCompatActivity {
 
     private  String currentGender, currentEmail, currentName, currentDOB, currentTeam, currentManager;
     private static final int GALLERY_INTENT = 2;
-    private boolean imageUploaded = false, removeProfileImage = false, updateProfileImage = false;
+    private boolean imageUploaded = false, removeProfileImage = false;
     private ProgressDialog progressDialog;
     private Uri profileUri;
     private int uploadCount = 0;
 
-    private static int WELCOME_DURATION = 4000;
+    private static int WELCOME_DURATION = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,11 +131,10 @@ public class editProfileActivity extends AppCompatActivity {
                                     Intent intent = new Intent(Intent.ACTION_PICK);
                                     intent.setType("image/*");
                                     startActivityForResult(intent, GALLERY_INTENT);
-                                    updateProfileImage = true;
                                 } else {
                                     profileImage.setImageResource(R.drawable.editprofileicon);
                                     removeProfileImage = true;
-                                    /*imageUploaded = true;*/
+                                    imageUploaded = false;
                                 }
                             }
                         });
@@ -146,7 +146,6 @@ public class editProfileActivity extends AppCompatActivity {
                         Intent intent = new Intent(Intent.ACTION_PICK);
                         intent.setType("image/*");
                         startActivityForResult(intent, GALLERY_INTENT);
-                        updateProfileImage = true;
                     }
                 }
                 catch (Exception e)
@@ -174,11 +173,15 @@ public class editProfileActivity extends AppCompatActivity {
                 alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.setMessage("Updating profile...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
                         if(imageUploaded)
                             uploadProfileImage();
-                        updateProfile();
                         if(removeProfileImage)
                             removeProfilePic();
+                        updateProfile();
+
                     }
                 });
                 alertDialog.setNegativeButton("No", null);
@@ -209,15 +212,10 @@ public class editProfileActivity extends AppCompatActivity {
 
     private void uploadProfileImage() {
         StorageReference filePath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
-        progressDialog.setMessage("Updating profile...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
         filePath.putFile(profileUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //Toast.makeText(getApplicationContext(),"Upload Done!",Toast.LENGTH_SHORT).show();
                         UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
                                 .setPhotoUri(profileUri)
                                 .build();
@@ -234,20 +232,19 @@ public class editProfileActivity extends AppCompatActivity {
     }
 
     private void removeProfilePic() {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
-        //progressDialog.setMessage("Removing...");
-        //progressDialog.setCancelable(false);
-        //progressDialog.show();
-        storageReference.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        //progressDialog.dismiss();
-                        //Toast.makeText(getApplicationContext(),"Removed profile image successfully.", Toast.LENGTH_SHORT).show();
-                        profileImage.setImageResource(R.drawable.editprofileicon);
-                        imageUploaded = true;
-                    }
-                });
+        try {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+            storageReference.delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            profileImage.setImageResource(R.drawable.editprofileicon);
+                        }
+                    });
+        }catch (Exception e)
+        {
+            Log.d("EditProfile",e.getMessage());
+        }
     }
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
@@ -423,10 +420,6 @@ public class editProfileActivity extends AppCompatActivity {
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                /*UserProfileChangeRequest userProfile = new UserProfileChangeRequest.Builder()
-                        .setPhotoUri(uri)
-                        .build();
-                firebaseAuth.getCurrentUser().updateProfile(userProfile);*/
                 profileUri = uri;
                 Picasso.with(editProfileActivity.this).load(uri).fit().centerCrop().into(profileImage);
             }
