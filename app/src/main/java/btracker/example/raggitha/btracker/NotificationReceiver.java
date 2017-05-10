@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -17,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -125,10 +125,17 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     //sending this notification to celebrate tomorrow's colleagues's birthday.
     private void setNotification2(Context context, DataSnapshot dataSnapshot) {
+
+        Date ddate = null;
+        try {
+            ddate = new SimpleDateFormat("dd/MM/yyyy").parse(dataSnapshot.getValue(UserData.class).getDOB());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent repeating_intent = new Intent(context, homeProfileActivity.class);
         repeating_intent.putExtra("NameKey",dataSnapshot.getValue(UserData.class).getName());
-        repeating_intent.putExtra("DOBKey",dataSnapshot.getValue(UserData.class).getName());
+        repeating_intent.putExtra("DOBKey",new SimpleDateFormat("dd/MMM").format(ddate));
         repeating_intent.putExtra("TeamKey",dataSnapshot.getValue(UserData.class).getTeam());
         repeating_intent.putExtra("EmailKey",dataSnapshot.getValue(UserData.class).getEmail());
         repeating_intent.putExtra("ManagerKey",dataSnapshot.getValue(UserData.class).getManager());
@@ -165,10 +172,16 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     //checking if the dob returned is of different user. if yes, asking current user to wish him/her.
     private void setNotification1(Context context, DataSnapshot dataSnapshot) {
+        Date ddate = null;
+        try {
+            ddate = new SimpleDateFormat("dd/MM/yyyy").parse(dataSnapshot.getValue(UserData.class).getDOB());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent repeating_intent = new Intent(context, homeProfileActivity.class);
         repeating_intent.putExtra("NameKey",dataSnapshot.getValue(UserData.class).getName());
-        repeating_intent.putExtra("DOBKey",dataSnapshot.getValue(UserData.class).getName());
+        repeating_intent.putExtra("DOBKey",new SimpleDateFormat("dd/MMM").format(ddate));
         repeating_intent.putExtra("TeamKey",dataSnapshot.getValue(UserData.class).getTeam());
         repeating_intent.putExtra("EmailKey",dataSnapshot.getValue(UserData.class).getEmail());
         repeating_intent.putExtra("ManagerKey",dataSnapshot.getValue(UserData.class).getManager());

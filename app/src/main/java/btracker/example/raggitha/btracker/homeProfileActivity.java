@@ -38,6 +38,11 @@ public class homeProfileActivity extends AppCompatActivity {
         hmProfileEmailIcon = (ImageView) findViewById(R.id.hmPfEmailIconID);
         genderIcon = (ImageView) findViewById(R.id.hmpfGenderIconID);
         hmManager = (TextView) findViewById(R.id.hmpfmanagerID);
+/*
+        HorizontalScrollView scrollView = (HorizontalScrollView) findViewById(R.id.epEmailScroller);
+
+        scrollView.setHorizontalScrollBarEnabled(false);
+*/
 
         final Bundle extras = getIntent().getExtras();
 
@@ -70,7 +75,7 @@ public class homeProfileActivity extends AppCompatActivity {
         hmProfileEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!extras.get("DOBKey").toString().equals(new SimpleDateFormat("dd/MMM").format(new Date())))
+                if( !extras.get("DOBKey").toString().equals(new SimpleDateFormat("dd/MMM").format(new Date())))
                 {
                     Toast.makeText(getApplicationContext(),"No Spamming! The option available only on "+extras.get("NameKey")+"'s Birthday",Toast.LENGTH_SHORT).show();
                     return;
