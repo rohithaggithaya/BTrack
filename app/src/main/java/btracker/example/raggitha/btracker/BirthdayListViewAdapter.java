@@ -1,13 +1,17 @@
 package btracker.example.raggitha.btracker;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -53,6 +57,7 @@ public class BirthdayListViewAdapter extends BaseAdapter {
             TextView ListName = (TextView) view.findViewById(R.id.listNameID);
             TextView ListDob = (TextView) view.findViewById(R.id.listDOBID);
             TextView ListTeam = (TextView) view.findViewById(R.id.listTeamID);
+            ImageView bdayIcon = (ImageView) view.findViewById(R.id.bdayIcon);
 
             HashMap<String,String> mBirthdays;
             mBirthdays = birthdays.get(position);
@@ -60,6 +65,13 @@ public class BirthdayListViewAdapter extends BaseAdapter {
             ListName.setText(mBirthdays.get("NameKey"));
             ListDob.setText(mBirthdays.get("DOBKey"));
             ListTeam.setText(mBirthdays.get("TeamKey"));
+
+            if (mBirthdays.get("DOBKey").equals(new SimpleDateFormat("dd/MMM").format(new Date()))) {
+                bdayIcon.setImageResource(R.drawable.cakeicon);
+                ListName.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+                ListTeam.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+                ListDob.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorPrimary));
+            }
             return view;
         }
         else
@@ -68,6 +80,7 @@ public class BirthdayListViewAdapter extends BaseAdapter {
             TextView ListName = (TextView) view.findViewById(R.id.listNameID);
             TextView ListDob = (TextView) view.findViewById(R.id.listDOBID);
             TextView ListTeam = (TextView) view.findViewById(R.id.listTeamID);
+            ImageView bdayIcon = (ImageView) view.findViewById(R.id.bdayIcon);
 
             HashMap<String,String> mBirthdays;
             mBirthdays = birthdays.get(position);
@@ -75,6 +88,14 @@ public class BirthdayListViewAdapter extends BaseAdapter {
             ListName.setText(mBirthdays.get("NameKey"));
             ListDob.setText(mBirthdays.get("DOBKey"));
             ListTeam.setText(mBirthdays.get("TeamKey"));
+
+            if (mBirthdays.get("DOBKey").equals(new SimpleDateFormat("dd/MMM").format(new Date()))) {
+                bdayIcon.setImageResource(R.drawable.cakeicon);
+                ListName.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+                ListTeam.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+                ListDob.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorPrimary));
+            }
+
             return view;
         }
     }

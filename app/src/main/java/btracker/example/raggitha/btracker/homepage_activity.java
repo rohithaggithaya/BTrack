@@ -31,8 +31,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class homepage_activity extends AppCompatActivity {
 
@@ -111,6 +115,26 @@ public class homepage_activity extends AppCompatActivity {
                             birthdaysListMap.add(birthdayHashMap);
 
                         }
+
+                        Collections.sort(birthdaysListMap, new Comparator<HashMap<String, String>>() {
+                                    @Override
+                                    public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+                                        Date d1=null,d2=null;
+                                        try {
+                                            d1 = new SimpleDateFormat("dd/MMM").parse(o1.get("DOBKey"));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        try {
+                                            d2 = new SimpleDateFormat("dd/MMM").parse(o2.get("DOBKey"));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        return d1.compareTo(d2);
+                                    }
+                                });
 
                         birthdayListViewAdapter = new BirthdayListViewAdapter(getApplicationContext(),birthdaysListMap);
                         birthdaysList.setAdapter(birthdayListViewAdapter);
