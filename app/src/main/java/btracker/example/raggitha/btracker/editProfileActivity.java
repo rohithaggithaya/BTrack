@@ -1,14 +1,18 @@
 package btracker.example.raggitha.btracker;
 
+
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.DeadObjectException;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -66,7 +70,8 @@ public class editProfileActivity extends AppCompatActivity {
     private Uri profileUri;
     private int uploadCount = 0;
 
-    private static int WELCOME_DURATION = 5000;
+    private static final int WELCOME_DURATION = 5000;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,51 +123,32 @@ public class editProfileActivity extends AppCompatActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try
+                if(ContextCompat.checkSelfPermission(editProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 {
-                    if(profileImage.getDrawable().getConstantState() != getResources().getDrawable(R.drawable.editprofileicon).getConstantState()) {
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(editProfileActivity.this);
-                        String items[] = {"Choose from Gallery", "Remove Profile Image"};
-                        alertDialog.setTitle("Choose an option");
-                        alertDialog.setItems(items, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == 0) {
-                                    Intent intent = new Intent(Intent.ACTION_PICK);
-                                    intent.setType("image/*");
-                                    startActivityForResult(intent, GALLERY_INTENT);
-                                } else {
-                                    profileImage.setImageResource(R.drawable.editprofileicon);
-                                    removeProfileImage = true;
-                                    imageUploaded = false;
-
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(editProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE))
+                    {
+                        //Toast.makeText(getApplicationContext(),"Rationale",Toast.LENGTH_LONG).show();
+                            alertDialog.setTitle("Requires permission");
+                            alertDialog.setMessage("This app required permission to access storage to update profile picture");
+                            alertDialog.setCancelable(false);
+                            alertDialog.setPositiveButton("Ask me again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(editProfileActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                                 }
-                            }
-                        });
-                        AlertDialog ad = alertDialog.create();
-                        ad.show();
+                            });
+                            alertDialog.setNegativeButton("ok",null);
+                            alertDialog.create().show();
                     }
                     else
                     {
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, GALLERY_INTENT);
+                        ActivityCompat.requestPermissions(editProfileActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    if(uploadCount>2)
-                    {
-                        Toast.makeText(getApplicationContext(),"Please try again...", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(editProfileActivity.this, profileActivity.class));
-                        finish();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(),"Please wait...", Toast.LENGTH_SHORT).show();
-                        uploadCount++;
-                    }
+                    selectPhotoFromGallery();
                 }
-
             }
         });
 
@@ -433,6 +419,79 @@ public class editProfileActivity extends AppCompatActivity {
         if(progressDialog!=null){
             progressDialog.dismiss();
             progressDialog = null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    //Toast.makeText(getApplicationContext(),"Permission Granted", Toast.LENGTH_LONG).show();
+                    selectPhotoFromGallery();
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(),"Permission Denied", Toast.LENGTH_LONG).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+            }
+        }
+
+        // other 'case' lines to check for other
+        // permissions this app might request
+    }
+
+    private void selectPhotoFromGallery() {
+        try
+        {
+            if(profileImage.getDrawable().getConstantState() != getResources().getDrawable(R.drawable.editprofileicon).getConstantState()) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(editProfileActivity.this);
+                String items[] = {"Choose from Gallery", "Remove Profile Image"};
+                alertDialog.setTitle("Choose an option");
+                alertDialog.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, GALLERY_INTENT);
+                        } else {
+                            profileImage.setImageResource(R.drawable.editprofileicon);
+                            removeProfileImage = true;
+                            imageUploaded = false;
+
+                        }
+                    }
+                });
+                AlertDialog ad = alertDialog.create();
+                ad.show();
+            }
+            else
+            {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALLERY_INTENT);
+            }
+        }
+        catch (Exception e)
+        {
+            if(uploadCount>2)
+            {
+                Toast.makeText(getApplicationContext(),"Please try again...", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(editProfileActivity.this, profileActivity.class));
+                finish();
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Please wait...", Toast.LENGTH_SHORT).show();
+                uploadCount++;
+            }
         }
     }
 }
