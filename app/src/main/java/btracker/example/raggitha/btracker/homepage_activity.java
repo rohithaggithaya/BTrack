@@ -1,5 +1,6 @@
 package btracker.example.raggitha.btracker;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
@@ -50,6 +53,8 @@ public class homepage_activity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +76,35 @@ public class homepage_activity extends AppCompatActivity {
         birthdaysList = (ListView) findViewById(R.id.homepageBListID);
 
         selectTeamFilter = (Spinner) findViewById(R.id.hpTeamFilterID);
+        progressDialog = new ProgressDialog(this);
 
         if(!netowrkIsAvailable())
             Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
+        else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(progressDialog.isShowing())
+                    {
+                        progressDialog.cancel();
+                        firebaseAuth.signOut();
+                        Toast.makeText(getApplicationContext(),"Oops! Data load error... \n Please sign in again",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(homepage_activity.this, SignInActivity.class));
+                        finish();
+                    }
+                }
+            },20000);
+        }
 
         if(firebaseAuth.getCurrentUser().isEmailVerified())
             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userVerified").setValue(true);
+
+        if(birthdaysList.getCount()==0)
+        {
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
 
         selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
             @Override
@@ -138,6 +166,14 @@ public class homepage_activity extends AppCompatActivity {
 
                         birthdayListViewAdapter = new BirthdayListViewAdapter(getApplicationContext(),birthdaysListMap);
                         birthdaysList.setAdapter(birthdayListViewAdapter);
+
+                        if(birthdaysList.getCount()==0)
+                            Toast.makeText(getApplicationContext(),"Nobody registered to B-Track from \n" + selectTeamFilter.getSelectedItem().toString(),Toast.LENGTH_LONG).show();
+
+                        if(progressDialog.isShowing() && birthdaysList.getCount()!=0)
+                        {
+                            progressDialog.dismiss();
+                        }
 
                         birthdaysList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override

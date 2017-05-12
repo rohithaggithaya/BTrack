@@ -129,7 +129,7 @@ public class editProfileActivity extends AppCompatActivity {
                     {
                         //Toast.makeText(getApplicationContext(),"Rationale",Toast.LENGTH_LONG).show();
                             alertDialog.setTitle("Requires permission");
-                            alertDialog.setMessage("This app required permission to access storage to update profile picture");
+                            alertDialog.setMessage("This app requires permission to read device storage to update profile picture");
                             alertDialog.setCancelable(false);
                             alertDialog.setPositiveButton("Ask me again", new DialogInterface.OnClickListener() {
                                 @Override
