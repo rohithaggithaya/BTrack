@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#6a7cef</color>
     <color name="genderAlert">#c60404</color>
+    <color name="black">#000000</color>
 </resources>

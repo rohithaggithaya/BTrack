@@ -6,20 +6,32 @@
 
     <TextView
         android:text="NAME"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/cameraIconID"
         android:layout_marginLeft="10dp"
-        android:textSize="25sp"
-        android:textAlignment="center"
+        android:textSize="21sp"
+        android:textAlignment="textStart"
+        android:gravity="start"
         android:textColor="#0a0909"
         android:textStyle="bold"
         android:id="@+id/listNameID"
-        android:layout_width="230dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/cameraIconID"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/unisexicon"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_below="@+id/listNameID"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/cameraIconID"
+        android:layout_alignLeft="@+id/listNameID"
         android:layout_height="wrap_content">
 
         <ImageView

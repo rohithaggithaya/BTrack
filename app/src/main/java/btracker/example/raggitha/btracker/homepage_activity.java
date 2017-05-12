@@ -81,6 +81,13 @@ public class homepage_activity extends AppCompatActivity {
         if(!netowrkIsAvailable())
             Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
         else{
+            if(birthdaysList.getCount()==0)
+            {
+                progressDialog.setMessage("Loading...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+            }
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -98,13 +105,6 @@ public class homepage_activity extends AppCompatActivity {
 
         if(firebaseAuth.getCurrentUser().isEmailVerified())
             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userVerified").setValue(true);
-
-        if(birthdaysList.getCount()==0)
-        {
-            progressDialog.setMessage("Loading...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
 
         selectTeamFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
             @Override
