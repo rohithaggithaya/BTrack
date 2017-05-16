@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,9 @@ public class updatePasswordActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_password);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         currentPassword = (EditText) findViewById(R.id.UPCurrentPasswordID);
         newPassword = (EditText) findViewById(R.id.UPNewPasswordID);
@@ -126,5 +130,16 @@ public class updatePasswordActivity extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(updatePasswordActivity.this, homepage_activity.class));
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+            return  true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
     }
 }

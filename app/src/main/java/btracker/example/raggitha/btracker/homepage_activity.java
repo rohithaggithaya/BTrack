@@ -9,6 +9,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,10 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +39,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class homepage_activity extends AppCompatActivity {
+public class homepage_activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Spinner selectTeamFilter;
 
@@ -59,16 +71,9 @@ public class homepage_activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_homepage_activity);
+        setContentView(R.layout.nav_drawer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //below code displays a back button on action bar.
-        /*
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-*/
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -77,6 +82,37 @@ public class homepage_activity extends AppCompatActivity {
 
         selectTeamFilter = (Spinner) findViewById(R.id.hpTeamFilterID);
         progressDialog = new ProgressDialog(this);
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayoutID);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle
+                (this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navView);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        final ImageView profileImage = (ImageView) headerView.findViewById(R.id.profileImageViewOnNavID);
+        TextView profileName = (TextView) headerView.findViewById(R.id.nameOnNavID);
+        profileName.setText(firebaseAuth.getCurrentUser().getDisplayName());
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
+        try{
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.with(getApplicationContext()).load(uri.toString()).centerCrop().fit().into(profileImage);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    profileImage.setImageResource(R.drawable.profilenavicon);
+                }
+            });
+        }
+        catch(Exception e)
+        {
+        }
 
         if(!netowrkIsAvailable())
             Toast.makeText(getApplicationContext(),"Data load error! Please connect to Internet", Toast.LENGTH_LONG).show();
@@ -223,7 +259,7 @@ public class homepage_activity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Logged out successfully!",Toast.LENGTH_SHORT).show();
             finish();
         }
-        else if (item.getItemId()==R.id.profileID)
+        /*else if (item.getItemId()==R.id.profileID)
         {
             startActivity(new Intent(homepage_activity.this, profileActivity.class));
             finish();
@@ -232,7 +268,7 @@ public class homepage_activity extends AppCompatActivity {
         {
             startActivity(new Intent(homepage_activity.this, updatePasswordActivity.class));
             finish();
-        }
+        }*/
 
         //below code gives "Report Bug" option in tool bar and on click takes user to send email with details populated.
         //if this is uncommented, make sure you make changes in menu.xml also.
@@ -256,11 +292,11 @@ public class homepage_activity extends AppCompatActivity {
             startActivity(intent);
         }*/
 
-        else
+       /* else
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
-            body.append("/* Please fill in your feedback/grievances */ \n");
+            body.append("*//* Please fill in your feedback/grievances *//* \n");
             body.append("\n Regards, \n");
             body.append(firebaseAuth.getCurrentUser().getDisplayName());
             String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
@@ -273,7 +309,7 @@ public class homepage_activity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_TEXT, body.toString());
             startActivity(intent);
         }
-
+*/
         return  true;
     }
 
@@ -300,5 +336,50 @@ public class homepage_activity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id==R.id.logoutID)
+        {
+            firebaseAuth.signOut();
+            startActivity(new Intent(homepage_activity.this, SignInActivity.class));
+            Toast.makeText(getApplicationContext(),"Logged out successfully!",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else if (id==R.id.profileID)
+        {
+            startActivity(new Intent(homepage_activity.this, profileActivity.class));
+            finish();
+        }
+        else if (id == R.id.changePasswordID)
+        {
+            startActivity(new Intent(homepage_activity.this, updatePasswordActivity.class));
+            finish();
+        }
+        else
+        {
+            StringBuilder body = new StringBuilder();
+            body.append("Hello B-Track Team, \n \n");
+            body.append("/* Please fill in your feedback/grievances */ \n");
+            body.append("\n Regards, \n");
+            body.append(firebaseAuth.getCurrentUser().getDisplayName());
+            String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
+            String developers2[] = {"varunvgnc@gmail.com","aggithaya@gmail.com"};
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","",null));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "B-Track - " + firebaseAuth.getCurrentUser().getDisplayName()+" wants to cantact you");
+            intent.putExtra(Intent.EXTRA_EMAIL, developers);
+            intent.putExtra(Intent.EXTRA_CC, developers2);
+            intent.putExtra(Intent.EXTRA_TEXT, body.toString());
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayoutID);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 }

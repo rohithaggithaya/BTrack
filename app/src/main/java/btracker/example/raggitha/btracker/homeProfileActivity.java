@@ -3,7 +3,9 @@ package btracker.example.raggitha.btracker;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +30,9 @@ public class homeProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_profile);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         hmProfileIcon = (ImageView) findViewById(R.id.hmpfIconID);
         hmProfileName = (TextView) findViewById(R.id.hmpfNameID);
@@ -121,4 +126,16 @@ public class homeProfileActivity extends AppCompatActivity {
             finish();*/
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+            return  true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
+    }
+
 }

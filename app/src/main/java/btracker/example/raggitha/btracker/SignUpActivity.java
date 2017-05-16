@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,7 +44,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText DOB,password;
     private Spinner TEAM;
     private Button signUp;
-    private TextView signIn;
     private ImageView calendarIcon;
 
     //for FireBase Authenticator
@@ -62,13 +62,15 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         enteredName = (EditText) findViewById(R.id.SUNameID);
         genderGroup = (RadioGroup) findViewById(R.id.SUGenderID);
         emailID = (EditText) findViewById(R.id.SUEmailID);
         DOB = (EditText) findViewById(R.id.SUDateID);
         TEAM = (Spinner) findViewById(R.id.SUTeamID);
         signUp = (Button) findViewById(R.id.SUsignUpID);
-        signIn = (TextView) findViewById(R.id.SULoginID);
         password = (EditText) findViewById(R.id.SUPasswordID);
         calendarIcon = (ImageView) findViewById(R.id.SUCalendarIconID);
         managerName = (EditText) findViewById(R.id.SUManagerID);
@@ -84,13 +86,6 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                     registerUser();
-            }
-        });
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
-                finish();
             }
         });
 
@@ -272,5 +267,16 @@ public class SignUpActivity extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+            return  true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
     }
 }

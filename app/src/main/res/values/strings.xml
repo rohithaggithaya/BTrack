@@ -3,30 +3,21 @@
 
     <array name="team_names">
         <item>Select Team</item>
-        <item>NBN TEST</item>
-        <item>NBN Dev</item>
-        <item>CHORUS TEST</item>
-        <item>CHORUS DEV</item>
-        <item>NLT</item>
+        <item>TEST TEAM</item>
+        <item>DEV TEAM</item>
         <item>OTHERS</item>
     </array>
 
     <array name="team_names2">
         <item>ALL</item>
-        <item>NBN TEST</item>
-        <item>NBN Dev</item>
-        <item>CHORUS TEST</item>
-        <item>CHORUS DEV</item>
-        <item>NLT</item>
+        <item>TEST TEAM</item>
+        <item>DEV TEAM</item>
         <item>OTHERS</item>
     </array>
 
     <array name="team_names3">
-        <item>NBN TEST</item>
-        <item>NBN Dev</item>
-        <item>CHORUS TEST</item>
-        <item>CHORUS DEV</item>
-        <item>NLT</item>
+        <item>TEST TEAM</item>
+        <item>DEV TEAM</item>
         <item>OTHERS</item>
     </array>
 
@@ -47,5 +38,7 @@
     <string name="title_activity_homepage_activity">homepage_activity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_home_profile">B-Track</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 
 </resources>
