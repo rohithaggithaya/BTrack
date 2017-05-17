@@ -1,227 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_sign_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="btracker.example.raggitha.btracker.SignUpActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
+        android:id="@+id/suScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/suScrollView">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:id="@+id/SUprofileImage"
-        android:orientation="vertical"
-        android:layout_height="110dp">
-
-        <TextView
-            android:text="Sign Up to the world of "
-            android:id="@+id/SUTitleID"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/SUcakeIconID"
-            android:src="@drawable/cakeicon"
-            android:layout_width="70dp"
-            android:layout_height="70dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/SUSignUpLinearLayoutID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/SUprofileImage"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:text="Name: "
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/SUNameID"
-                android:layout_marginLeft="29dp"
-                android:hint="Your name here"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ "
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                />
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
 
-        </LinearLayout>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/cakeicon"
+                android:layout_gravity="center"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-            <TextView
-                android:text="Gender: "
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/SUNameID"
+                    android:hint="Name"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
+
             <RadioGroup
                 android:id="@+id/SUGenderID"
-                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <RadioButton
                     android:text="Male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
                 <RadioButton
                     android:text="Female"
                     android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
             </RadioGroup>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mail ID: "
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/SUEmailID"
-                android:hint="xyz@nokia.com"
-                android:layout_marginLeft="20dp"
-                android:inputType="textEmailAddress"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password: "
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/SUPasswordID"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/SUEmailID"
+                    android:hint="xyz@nokia.com"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DOB: "
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/SUDateID"
-                android:hint="DD/MM/YYYY"
-                android:layout_width="130dp"
-                android:inputType="date"
-                android:digits="0123456789/"
-                android:layout_marginLeft="43dp"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/calendericon"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center"
-                android:id="@+id/SUCalendarIconID"
-                />
-        </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Team: "
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                app:passwordToggleEnabled="true"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/SUPasswordID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password (Min 8 digits)"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/SUDateID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date Of Birth"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/SUManagerID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Line Manager"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
+
             <Spinner
-                android:layout_width="200dp"
                 android:id="@+id/SUTeamID"
-                android:layout_marginLeft="27dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
                 android:entries="@array/team_names"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/SUsignUpID"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Manager: "
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/SUManagerID"
-                android:hint="Line manager's name"
-                android:layout_marginLeft="5dp"
-                android:layout_width="200dp"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ "
-                android:layout_height="wrap_content" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorPrimary"
+                android:text="Register"
+                android:textColor="#ffff"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/SUsignUpID"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimary"
-            android:text="Register"
-            android:textColor="#ffff"
-            android:textSize="17sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-    </RelativeLayout>
     </ScrollView>
+
 </RelativeLayout>

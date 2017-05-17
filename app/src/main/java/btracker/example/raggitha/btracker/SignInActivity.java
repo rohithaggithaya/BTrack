@@ -59,6 +59,7 @@ public class SignInActivity extends AppCompatActivity implements OnFailureListen
         }
 
         scrollView.setVerticalScrollBarEnabled(false);
+
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

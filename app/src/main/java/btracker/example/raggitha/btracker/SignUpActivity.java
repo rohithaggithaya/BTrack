@@ -12,12 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +42,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText DOB,password;
     private Spinner TEAM;
     private Button signUp;
-    private ImageView calendarIcon;
 
     //for FireBase Authenticator
     private ProgressDialog progressDialog;
@@ -72,7 +69,6 @@ public class SignUpActivity extends AppCompatActivity {
         TEAM = (Spinner) findViewById(R.id.SUTeamID);
         signUp = (Button) findViewById(R.id.SUsignUpID);
         password = (EditText) findViewById(R.id.SUPasswordID);
-        calendarIcon = (ImageView) findViewById(R.id.SUCalendarIconID);
         managerName = (EditText) findViewById(R.id.SUManagerID);
         ScrollView scrollView = (ScrollView) findViewById(R.id.suScrollView);
 
@@ -80,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        scrollView.setVerticalScrollBarEnabled(false);
+       scrollView.setVerticalScrollBarEnabled(false);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,11 +85,53 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        calendarIcon.setOnClickListener(new View.OnClickListener() {
+        enteredName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(enteredName.getText().toString().isEmpty())
+                {
+                    enteredName.setError("Required");
+                }
+            }
+        });
 
-                new DatePickerDialog(SignUpActivity.this, listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(password.getText().toString().isEmpty())
+                    password.setError("Required");
+            }
+        });
+
+        managerName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(managerName.getText().toString().isEmpty())
+                    managerName.setError("Required");
+            }
+        });
+
+        DOB.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                    if(DOB.hasFocus())
+                        new DatePickerDialog(SignUpActivity.this, listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        emailID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                String email = emailID.getText().toString().trim();
+                if(TextUtils.isEmpty(email)||((!email.contains("@nokia.com"))))
+                {
+                    if(TextUtils.isEmpty(email))
+                        emailID.setError("Required");
+                    else{
+                        emailID.setError("Nokia email please");
+                    }
+                    return;
+                }
             }
         });
     }
@@ -175,16 +213,17 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if(!dob.matches("[0-9][0-9]/[0-9][0-9]/[12][09][0-9][0-9]"))
+        //below code is used to check the dob format entered in edit text field.
+        /*if(!dob.matches("[0-9][0-9]/[0-9][0-9]/[12][09][0-9][0-9]"))
         {
             DOB.setError("Invalid");
             DOB.requestFocus();
             return;
-        }
+        }*/
 
         if(dob.equals(new SimpleDateFormat("dd/MM/yyyy").format(new Date())))
         {
-            DOB.setError("Invalid");
+            Toast.makeText(getApplicationContext(),"It cannot be today, right? \n Try Again",Toast.LENGTH_LONG).show();
             DOB.requestFocus();
             return;
         }
@@ -198,7 +237,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         if(ddate.after(new Date()))
         {
-            DOB.setError("Invalid");
+            Toast.makeText(getApplicationContext(),"Don't tell me you time-travelled! \n Try again",Toast.LENGTH_LONG).show();
             DOB.requestFocus();
             return;
         }

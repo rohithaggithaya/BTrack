@@ -53,7 +53,6 @@ public class profileActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
-    private StorageReference storageReference;
     private String userID;
     private profileListViewAdapter adapter;
 
@@ -77,7 +76,6 @@ public class profileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        storageReference = FirebaseStorage.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid();
 
         profileIcon.setOnClickListener(new View.OnClickListener() {
