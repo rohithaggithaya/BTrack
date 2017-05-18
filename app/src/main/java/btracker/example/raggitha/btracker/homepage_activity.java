@@ -17,11 +17,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,12 +29,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -50,8 +45,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class homepage_activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -316,21 +309,27 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alertDialog;
-        alertDialog = new AlertDialog.Builder(homepage_activity.this);
-        alertDialog.setTitle("Exit?");
-        alertDialog.setMessage("Do you really want to close B-Track?");
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                homepage_activity.this.finish();
-                Toast.makeText(getApplicationContext(),"Good bye!",Toast.LENGTH_SHORT).show();
+            DrawerLayout layout = (DrawerLayout)findViewById(R.id.drawerLayoutID);
+            if (layout.isDrawerOpen(GravityCompat.START)) {
+                layout.closeDrawer(GravityCompat.START);
+            } else {
+                AlertDialog.Builder alertDialog;
+                alertDialog = new AlertDialog.Builder(homepage_activity.this);
+                alertDialog.setTitle("Exit?");
+                alertDialog.setIcon(R.drawable.exiticon);
+                alertDialog.setMessage("Do you really want to close B-Track?");
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        homepage_activity.this.finish();
+                        Toast.makeText(getApplicationContext(), "Good bye!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialog.setNegativeButton("No", null);
+                alertDialog.setCancelable(true);
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
             }
-        });
-        alertDialog.setNegativeButton("No", null);
-        alertDialog.setCancelable(true);
-        AlertDialog dialog = alertDialog.create();
-        dialog.show();
     }
 
     private boolean netowrkIsAvailable() {
@@ -362,20 +361,31 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
         }
         else if (id == R.id.contactUsID)
         {
-            StringBuilder body = new StringBuilder();
-            body.append("Hello B-Track Team, \n \n");
-            body.append("/* Please fill in your feedback/grievances */ \n");
-            body.append("\n Regards, \n");
-            body.append(firebaseAuth.getCurrentUser().getDisplayName());
-            String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
-            String developers2[] = {"varunvgnc@gmail.com","aggithaya@gmail.com"};
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Developers");
+            alertDialog.setIcon(R.drawable.developericon);
+            alertDialog.setMessage("Varun A M \nvarun.a_m@nokia.com \n\nRohith S Aggithaya \nrohith.aggithaya@nokia.com");
+            alertDialog.setPositiveButton("Send Email", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    StringBuilder body = new StringBuilder();
+                    body.append("Hello B-Track Team, \n \n");
+                    body.append(" Please fill in your feedback/grievances  \n");
+                    body.append("\n Regards, \n");
+                    body.append(firebaseAuth.getCurrentUser().getDisplayName());
+                    String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
+                    String developers2[] = {"varunvgnc@gmail.com","aggithaya@gmail.com"};
 
-            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","",null));
-            intent.putExtra(Intent.EXTRA_SUBJECT, "B-Track - " + firebaseAuth.getCurrentUser().getDisplayName()+" wants to cantact you");
-            intent.putExtra(Intent.EXTRA_EMAIL, developers);
-            intent.putExtra(Intent.EXTRA_CC, developers2);
-            intent.putExtra(Intent.EXTRA_TEXT, body.toString());
-            startActivity(intent);
+                    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","",null));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "B-Track - " + firebaseAuth.getCurrentUser().getDisplayName()+" wants to cantact you");
+                    intent.putExtra(Intent.EXTRA_EMAIL, developers);
+                    intent.putExtra(Intent.EXTRA_CC, developers2);
+                    intent.putExtra(Intent.EXTRA_TEXT, body.toString());
+                    startActivity(intent);
+                }
+            });
+            alertDialog.setNegativeButton("Ok",null);
+            alertDialog.create().show();
         }
 
         else

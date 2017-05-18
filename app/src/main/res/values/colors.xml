@@ -5,4 +5,5 @@
     <color name="colorAccent">#6a7cef</color>
     <color name="genderAlert">#c60404</color>
     <color name="black">#000000</color>
+    <color name="background">#d9e0e7</color>
 </resources>

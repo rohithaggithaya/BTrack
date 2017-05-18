@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListViewCompat;
@@ -120,6 +121,7 @@ public class profileActivity extends AppCompatActivity {
                 AlertDialog.Builder alertDialog;
                 alertDialog = new AlertDialog.Builder(profileActivity.this);
                 alertDialog.setTitle("Edit Profile");
+                alertDialog.setIcon(R.drawable.edit_icon);
                 alertDialog.setMessage("Are you sure?");
                 alertDialog.setNegativeButton("No",null);
                 alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -143,7 +145,7 @@ public class profileActivity extends AppCompatActivity {
         alertDialog.setView(providePassword);
         alertDialog.setTitle("Validate User");
         alertDialog.setCancelable(false);
-
+        alertDialog.setIcon(R.drawable.passwordicon);
         alertDialog.setPositiveButton("submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

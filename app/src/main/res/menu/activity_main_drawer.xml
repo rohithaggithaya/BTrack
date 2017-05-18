@@ -17,17 +17,10 @@
                     android:actionViewClass="android.support.v7.widget.SearchView"
                     android:title="Change Password" />
 
-                <item
-                    android:id="@+id/contactUsID"
-                    android:icon="@drawable/feedbackicon"
+                <!--<item
+                    android:id="@+id/changeBackgroundID"
                     android:actionViewClass="android.support.v7.widget.SearchView"
-                    android:title="Contact Us" />
-
-                <item
-                    android:id="@+id/logoutID"
-                    android:icon="@drawable/logouticon"
-                    android:actionViewClass="android.support.v7.widget.SearchView"
-                    android:title="Log out" />
+                    android:title="Contact Us" />-->
             </group>
         </menu>
 
@@ -42,6 +35,24 @@
                 android:id="@+id/fundsTrackerID"
                 android:title="Funds Tracker"
                 android:icon="@drawable/fundsicon"/>
+        </menu>
+    </item>
+
+    <item
+        android:title="App Powered by HithAM"
+        >
+        <menu>
+            <item
+                android:id="@+id/contactUsID"
+                android:icon="@drawable/feedbackicon"
+                android:title="Contact us">
+            </item>
+
+            <item
+                android:id="@+id/logoutID"
+                android:icon="@drawable/logouticon"
+                android:actionViewClass="android.support.v7.widget.SearchView"
+                android:title="Log out" />
         </menu>
     </item>
 </menu>
