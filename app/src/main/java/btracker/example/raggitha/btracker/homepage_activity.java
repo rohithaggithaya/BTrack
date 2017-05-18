@@ -87,6 +87,12 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
 
         View headerView = navigationView.getHeaderView(0);
         final ImageView profileImage = (ImageView) headerView.findViewById(R.id.profileImageViewOnNavID);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Yes, that's you!", Toast.LENGTH_LONG).show();
+            }
+        });
         TextView profileName = (TextView) headerView.findViewById(R.id.nameOnNavID);
         profileName.setText(firebaseAuth.getCurrentUser().getDisplayName());
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Photos").child(firebaseAuth.getCurrentUser().getEmail());
