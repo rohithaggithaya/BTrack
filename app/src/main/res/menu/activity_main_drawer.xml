@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/profileID"
-            android:icon="@drawable/profilenavicon"
-            android:actionViewClass="android.support.v7.widget.SearchView"
-            android:title="Profile" />
+    <item
+        android:title="Personal">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/profileID"
+                    android:icon="@drawable/profilenavicon"
+                    android:actionViewClass="android.support.v7.widget.SearchView"
+                    android:title="Profile" />
 
-        <item
-            android:id="@+id/changePasswordID"
-            android:icon="@drawable/resetpassicon"
-            android:actionViewClass="android.support.v7.widget.SearchView"
-            android:title="Change Password" />
+                <item
+                    android:id="@+id/changePasswordID"
+                    android:icon="@drawable/resetpassicon"
+                    android:actionViewClass="android.support.v7.widget.SearchView"
+                    android:title="Change Password" />
 
-        <item
-            android:id="@+id/contactUsID"
-            android:icon="@drawable/feedbackicon"
-            android:actionViewClass="android.support.v7.widget.SearchView"
-            android:title="Contact Us" />
+                <item
+                    android:id="@+id/contactUsID"
+                    android:icon="@drawable/feedbackicon"
+                    android:actionViewClass="android.support.v7.widget.SearchView"
+                    android:title="Contact Us" />
 
-        <item
-            android:id="@+id/logoutID"
-            android:icon="@drawable/logouticon"
-            android:actionViewClass="android.support.v7.widget.SearchView"
-            android:title="Log out" />
-    </group>
+                <item
+                    android:id="@+id/logoutID"
+                    android:icon="@drawable/logouticon"
+                    android:actionViewClass="android.support.v7.widget.SearchView"
+                    android:title="Log out" />
+            </group>
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/fundsTitleID"
+        android:title="Funds"
+        >
+        <menu>
+            <item
+                android:id="@+id/fundsTrackerID"
+                android:title="Funds Tracker"
+                android:icon="@drawable/fundsicon"/>
+        </menu>
+    </item>
 </menu>

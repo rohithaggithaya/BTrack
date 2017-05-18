@@ -243,14 +243,16 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
         });
     }
 
-    @Override
+    //below code inflates menu item (account) and creates option on right top corner with 3 dots as icon.
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.account,menu);
         return true;
-    }
+    }*/
 
-    @Override
+    //Below code is used when above tool bar options are used.
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.logoutID)
         {
@@ -259,7 +261,7 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
             Toast.makeText(getApplicationContext(),"Logged out successfully!",Toast.LENGTH_SHORT).show();
             finish();
         }
-        /*else if (item.getItemId()==R.id.profileID)
+        else if (item.getItemId()==R.id.profileID)
         {
             startActivity(new Intent(homepage_activity.this, profileActivity.class));
             finish();
@@ -268,17 +270,17 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
         {
             startActivity(new Intent(homepage_activity.this, updatePasswordActivity.class));
             finish();
-        }*/
+        }
 
         //below code gives "Report Bug" option in tool bar and on click takes user to send email with details populated.
         //if this is uncommented, make sure you make changes in menu.xml also.
-        /*else if(item.getItemId() == R.id.reportBugID)
+        else if(item.getItemId() == R.id.reportBugID)
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
             body.append("I found a bug while using B-Track app.\n ");
             body.append("Please do the needful and verify this. Details below.\n \n");
-            body.append("*//* Enter your bug details here *//* \n");
+            body.append(" Enter your bug details here  \n");
             body.append("\n Regards, \n");
             body.append(firebaseAuth.getCurrentUser().getDisplayName());
             String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
@@ -290,13 +292,13 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
             intent.putExtra(Intent.EXTRA_CC, developers2);
             intent.putExtra(Intent.EXTRA_TEXT, body.toString());
             startActivity(intent);
-        }*/
+        }
 
-       /* else
+        else
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
-            body.append("*//* Please fill in your feedback/grievances *//* \n");
+            body.append(" Please fill in your feedback/grievances  \n");
             body.append("\n Regards, \n");
             body.append(firebaseAuth.getCurrentUser().getDisplayName());
             String developers[] = {"varun.a_m@nokia.com", "rohith.aggithaya@nokia.com"};
@@ -309,9 +311,8 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
             intent.putExtra(Intent.EXTRA_TEXT, body.toString());
             startActivity(intent);
         }
-*/
         return  true;
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -359,7 +360,7 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
             startActivity(new Intent(homepage_activity.this, updatePasswordActivity.class));
             finish();
         }
-        else
+        else if (id == R.id.contactUsID)
         {
             StringBuilder body = new StringBuilder();
             body.append("Hello B-Track Team, \n \n");
@@ -377,6 +378,10 @@ public class homepage_activity extends AppCompatActivity implements NavigationVi
             startActivity(intent);
         }
 
+        else
+        {
+            Toast.makeText(getApplicationContext(),"Coming soon!", Toast.LENGTH_LONG).show();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayoutID);
         drawer.closeDrawer(GravityCompat.START);
 
